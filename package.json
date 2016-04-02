@@ -1,0 +1,26 @@
+{
+  "name": "ravelry_src",
+  "version": "1.0.0",
+  "description": "Development for the Ravelry module.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sfrieson/ravelry.git"
+  },
+  "keywords": [
+    "knitting",
+    "crochet",
+    "patterns",
+    "API"
+  ],
+  "author": "Steven Frieson <sfrieson@gmail.com> (http://stevenfrieson.com)",
+  "license": "ISC",
+  "homepage": "https://github.com/sfrieson/ravelry#readme",
+  "dependencies": {
+    "dotenv": "^2.0.0",
+    "oauth": ">=0.9.0 <1.0.0"
+  }
+}
