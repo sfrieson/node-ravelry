@@ -1,38 +1,20 @@
 module.exports = function(that){
-    return {
+    var common = require('../utilities/commonCalls.js')(that);
+        return {
         create: function(bundle, cb){
-            var endpoint = `/people/${that.user.username}/bundles/create.json`;
-            that._post(endpoint, bundle, function(err, data){ cb(err, data); });
+            common.postParams(`/people/${that.user.username}/bundles/create.json`, bundle, cb);
         },
         delete: function(id, cb){
-            var endpoint = `/people/${that.user.username}/bundles/${id}.json`;
-            that._delete(endpoint, function(err, data){ cb(err, data); });
+            common.delete(`/people/${that.user.username}/bundles/${id}.json`, cb);
         },
         list: function(username, params, cb){
-            if(typeof username !== 'string'){
-                cb = params;
-                params = username;
-                username = that.user.username;
-            }
-            if(typeof params !== 'object'){
-                cb = params;
-                params = null;
-            }
-            var endpoint = `/people/${username}/bundles/list.json`;
-            that._get(endpoint, params, function(err, data){ cb(err, data); });
+            common.getUserParams('/people/','/bundles/list.json', username, params, cb);
         },
         show: function(username, id, cb){
-            if(typeof username !== 'string'){
-                cb = id;
-                id = username;
-                username = that.user.username;
-            }
-            var endpoint = `/people/${username}/bundles/${id}.json`;
-            that._get(endpoint, null, function(err, data){ cb(err, data); });
+            common.getUserId('/people/','/bundles/','.json', username, id, cb);
         },
         update: function(id, bundle, cb){
-            var endpoint = `/people/${that.user.username}/bundles/${id}.json`;
-            that._post(endpoint, bundle, function(err, data){ cb(err, data); });
+            common.postParams(`/people/${that.user.username}/bundles/${id}.json`, bundle, cb);
         },
     };
 };

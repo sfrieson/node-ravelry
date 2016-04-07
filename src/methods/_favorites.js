@@ -1,53 +1,32 @@
+
 module.exports = function(that) {
+    var common = require('../utilities/commonCalls.js')(that);
     return {
         create: function(bookmarkPost, cb){
-            var endpoint = `/people/${that.user.username}/favorites/create.json`;
-            that._post(endpoint, bookmarkPost, function(err, data){ return cb(err, data); });
+            common.postParams(`/people/${that.user.username}/favorites/create.json`,
+            bookmarkPost, cb);
         },
-
         delete: function(id, cb){
-            var endpoint = `/people/${that.user.username}/favorites/${id}.json`;
-            that._delete(endpoint, function(err, data){ return cb(err, data); });
+            common.deleteId(`/people/${that.user.username}/favorites/`,id,'.json', cb);
         },
-
         list: function(username, params, cb){
-            if(typeof username !== 'string'){
-                cb = params;
-                params = username;
-                username = that.user.username;
-            }
-            if(typeof params !== 'object'){
-                cb = params;
-                params = "";
-            }
-            if(!cb) throw("Error: No Callback supplied");
-            var endpoint = `/people/${username}/favorites/list.json`;
-            that._get(endpoint, params, function(err, data){ return cb(err, data); });
+            common.getUserParams('/people/','/favorites/list.json', username, params, cb);
         },
 
         show: function(username, id, cb){
-            if(typeof username !== 'string'){
-                cb = id;
-                id = username;
-                username = that.user.username;
-            }
-            var endpoint = `/people/${username}/favorites/${id}.json`;
-            that._get(endpoint, null, function(err, data){ return cb(err, data); });
+            common.getUser('/people/','/favorites/','.json', username, id, cb);
         },
 
         update: function(id, bookmarkPost, cb){
-            var endpoint = `/people/${that.user.username}/favorites/${id}.json`;
-            that._post(endpoint, bookmarkPost, function(err, data){ return cb(err, data);});
+            common.postParams(`/people/${that.user.username}/favorites/${id}.json`, bookmarkPost, cb);
         },
 
-        addToBundle: function(id, bundleId, cb){
-            var endpoint = `/people/${that.user.username}/favorites/${id}/add_to_bundle.json`;
-            that._post(endpoint, bundleId, function(err, data){ return cb(err, data); });
+        addToBundle: function(id, bundle, cb){
+            common.postParams(`/people/${that.user.username}/favorites/${id}/add_to_bundle.json`, bundle, cb);
         },
 
-        removeFromBundle: function(id, bundleId, cb){
-            var endpoint = `/people/${this.user.username}/favorites/${id}/remove_from_bundle.json`;
-            that._post(endpoint, bundleId, function(err, data){return cb(err, data);});
+        removeFromBundle: function(id, bundle, cb){
+            common.postParams(`/people/${that.user.username}/favorites/${id}/remove_from_bundle.json`, bundle, cb);
         }
     };
 };

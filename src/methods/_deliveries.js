@@ -1,12 +1,11 @@
 module.exports = function(that){
+    var common = require('../utilities/commonCalls.js')(that);
     return {
         list: function(params, cb){
-            var endpoint = "/deliveries/list.json";
-            that._get(endpoint, params, function(err, data) {cb(err,data);});
+            common.getParams("/deliveries/list.json", params, cb);
         },
         renew: function(id, params, cb){
-            var endpoint = `/deliveries/#{id}/renew.json`;
-            that._post(endpoint, params, function(err, data){cb(err,data);});
+            common.postParams(`/deliveries/${id}/renew.json`, params, cb);
         }
     };
 };

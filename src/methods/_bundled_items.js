@@ -1,12 +1,11 @@
 module.exports = function(that){
-    return {
-        delete: function(bundledItemId, cb){
-            var endpoint = `/bundled_items/${bundledItemId}.json`;
-            that._delete(endpoint, function(err, data){ cb(err, data);});
+    var common = require('../utilities/commonCalls.js')(that);
+        return {
+        delete: function(id, cb){
+            commom.delete(`/bundled_items/${id}.json`, cb);
         },
-        show: function(bundledItemId, cb){
-            var endpoint = `/bundled_items/${bundledItemId}.json`;
-            that._get(endpoint, function(err, data){ cb(err, data);});
+        show: function(id, cb){
+            common.get( `/bundled_items/${id}.json`, cb);
         }
     };
 };

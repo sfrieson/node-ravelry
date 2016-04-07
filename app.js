@@ -9,7 +9,7 @@ var rav = new Ravelry({
     ravPersonalKey: process.env.RAVPERSONALKEY,
     callbackUrl: 'http://localhost:8080/callback'
 }, [
-    'forum-write', 'message-write', 'patternstore-read', 'deliveries-read', 'library-pdf'
+    'forum-write', 'message-write', 'patternstore-read', 'deliveries-read'//, 'library-pdf'
 ]);
 var i = 0, tempFav;
 http.createServer(function(req,res){

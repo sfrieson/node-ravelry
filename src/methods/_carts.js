@@ -1,20 +1,17 @@
 module.exports = function(that){
+    var common = require('../utilities/commonCalls.js')(that);
     return {
         add: function(id, itemCode, cb){
-            var endpoint = `/carts/${id}/add.json`;
-            that._post(endpoint, {item_code: itemCode}, function(err, data){ cb(err, data); });
+            common.postParams(`/carts/${id}/add.json`, itemCode, cb);
         },
         create: function(storeId, cb){
-            var endpoint = '/carts/create.json';
-            that._post(endpoint, storeId, function(err, data){ cb(err, data); });
+            common.postParams('/carts/create.json', storeId, cb);
         },
         externalCheckout(id, paymentReference, cb){
-            var endpoint = `/carts/{id}/external_checkout.json`;
-            that._post(endpoint, paymentReference, function(err, data) { cb(err, data); } );
+            common.postParams(`/carts/${id}/external_checkout.json`, paymentReference, cb);
         },
         loveknittingCheckout(id, params, cb) {
-            var endpoint = `/carts/loveknitting/${id}/external_checkout.json`;
-            that._post(endpoint, params, function(err,data){ cb(err, data); });
+            common.postParams(`/carts/loveknitting/${id}/external_checkout.json`, params, cb);
         }
     };
 };

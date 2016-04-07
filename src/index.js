@@ -24,6 +24,15 @@ var Ravelry = function(opt, perm){
     this.carts = require('./methods/_carts')(this);
     this.deliveries = require('./methods/_deliveries')(this);
     this.favorites = require('./methods/_favorites')(this);
+    this.fiber = require('./methods/_fiber')(this);
+    this.forumPosts = require('./methods/_forum_posts')(this);
+    this.forums = require('./methods/_forums')(this);
+    this.friends = require('./methods/_friends')(this);
+    this.groups = require('./methods/_groups')(this);
+    this.inStoreSales = require('./methods/_in_store_sales')(this);
+    this.library = require('./methods/_library')(this);
+    this.messages = require('./methods/_messages')(this);
+
 
     function permissions (perm) {
         if(!perm || perm.length === 0) return "";

@@ -1,12 +1,11 @@
 module.exports = function (that){
+    var common = require('../utilities/commonCalls.js')(that);
     return {
         create: function (params, cb){
-            var endpoint = "/comments/create.json";
-            that._post(endpoint, params, function(err, data){cb(err, data);});
+            common.postParams("/comments/create.json", params, cb);
         },
         delete: function(id, cb){
-            var endpoint = `/comments/${id}.json`;
-            that._delete(endpoint, function(err, data){cb(err,data);});
+            common.delete(`/comments/${id}.json`, cb);
         }
     };
 };

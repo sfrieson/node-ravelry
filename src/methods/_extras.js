@@ -1,8 +1,8 @@
 module.exports = function(that){
+    var common = require('../utilities/commonCalls.js')(that);
     return {
         createAttachment: function(params, cb){
-            var endpoint = '/extras/create_attachment.json';
-            that._post(endpoint, params, function(err,data){cb(err,cata);});
+            common.postParams('/extras/create_attachment.json', params, cb);
         }
     };
 };
