@@ -64,16 +64,65 @@ var Ravelry = function(opt, perm){
 Ravelry.prototype.currentUser = function(cb) {
     var that = this;
     if(this.user) return this.user;
-    this._get('/current_user.json', null, function(err, data){
-        if (err) {
-            cb(err);
-        } else {
+    var promise = new Promise(function(resolve, reject) {
+        this._get('/current_user.json', null, function(err, data){
+            if (err) {
+                return reject(err);
+            }
             that.user = JSON.parse(data).user;
-            cb(null, that.user);
+            resolve(that.user);
+        });
+        if(cb){
+            promise
+                .then( function(data){ cb(null, data); })
+                .catch(cb);
+            return null;
         }
+        return promise;
     });
 };
 
+Ravelry.prototype.colorFamilies = function(cb) {
+    var that = this;
+    if(this.user) return this.user;
+    var promise = new Promise(function(resolve, reject) {
+        this._get('/color_families.json', null, function(err, data){
+            if (err) {
+                return reject(err);
+            }
+            that.user = JSON.parse(data).user;
+            resolve(that.user);
+        });
+        if(cb){
+            promise
+                .then( function(data){ cb(null, data); })
+                .catch(cb);
+            return null;
+        }
+        return promise;
+    });
+};
+
+Ravelry.prototype.yarnWeights = function(cb) {
+    var that = this;
+    if(this.user) return this.user;
+    var promise = new Promise(function(resolve, reject) {
+        this._get('/yarn_weights.json', null, function(err, data){
+            if (err) {
+                return reject(err);
+            }
+            that.user = JSON.parse(data).user;
+            resolve(that.user);
+        });
+        if(cb){
+            promise
+                .then( function(data){ cb(null, data); })
+                .catch(cb);
+            return null;
+        }
+        return promise;
+    });
+};
 
 Ravelry.prototype.signInUrl = function(cb){
     var that = this;
