@@ -3,10 +3,10 @@ module.exports = function(that) {
     return {
         loveknitting: {
             export: function(params, cb){
-                common.getParams('/products/loveknitting/export.json', params, cb);
+                return common.getParams('/products/loveknitting/export.json', params, cb);
             },
             updateStatus: function(id, params, cb){
-                common.postParams(`/products/${id}/loveknitting/update_status.json`, paramscb);
+                return common.postParams(`/products/${id}/loveknitting/update_status.json`, paramscb);
             }
         }
     };
