@@ -7,14 +7,18 @@ var rav = new Ravelry({
     ravAccessKey: process.env.RAVACCESSKEY,
     ravSecretKey: process.env.RAVSECRETKEY,
     ravPersonalKey: process.env.RAVPERSONALKEY,
-    callbackUrl: 'http://localhost:8080/callback'
+    callbackUrl: 'http://localhost:8080/callback',
+    responseUrl: 'http://localhost:8080/response'
 }, [
     'forum-write', 'message-write', 'patternstore-read', 'deliveries-read'//, 'library-pdf'
 ]);
 var i = 0, tempFav;
 http.createServer(function(req,res){
     var url = req.url;
+
+    //Middleware
     console.log(req.method, url); //logging
+    // rav.authorize(req, res, next);  //if using
 
     if (url === "" || url === "/") {
         rav.signInUrl(function(err, url){
@@ -22,16 +26,12 @@ http.createServer(function(req,res){
             res.end();
         });
 
-    } else if (url.match('callback') ) {
-        //TODO Can this be removed from User responsibility?
-        url = require('url').parse(url, true);
-        // rav.oauth_token = url.query.oauth_token; //this is already known.
-        rav._oauth_verifier = url.query.oauth_verifier;
+    } else if (url.match("/callback")) {
+        rav.authorize(req,res);
 
-        rav.accessToken(function(err, user){
-            res.writeHead(200, 'text/plain');
-            res.end(JSON.stringify(user));
-        });
+    } else if (url === "/response") {
+        res.writeHead(200, 'application/json');
+        res.end( JSON.stringify(rav.user) || "{'user': 'undefined'}" );
 
     } else if (url === "/favicon.ico") {
         res.writeHead(404, {'Content-Type': 'text/html'});
@@ -148,7 +148,7 @@ http.createServer(function(req,res){
                 res.end();
             } else {
                 res.writeHead(200, {'Content-Type':'application/json'});
-                res.end( data);
+                res.end(data);
             }
         });
 

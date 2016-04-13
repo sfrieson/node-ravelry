@@ -8,6 +8,7 @@ var Ravelry = function(opt, perm){
     this._ravSecretKey = opt.ravSecretKey;
     this._ravPersonalKey = opt.ravPersonalKey || null; // TODO Implement usage
     this._callbackUrl = opt.callbackUrl || "oob"; //as per OAuth 1.0A spec
+    this._responseUrl = opt.responseUrl; //for more seamless login
     this._oauth = new OAuth(
         'https://www.ravelry.com/oauth/request_token' + permissions(perm),
         'https://www.ravelry.com/oauth/access_token',
@@ -24,6 +25,7 @@ var Ravelry = function(opt, perm){
     }
 
     //Can't use prototype because they need access to this context
+    Object.assign(this,           require('./methods/_misc')(this)); //currentUser, colorFamilies, and yarnWeights
     this.app                    = require('./methods/_app')(this);
     this.bundledItems           = require('./methods/_bundled_items')(this);
     this.bundles                = require('./methods/_bundles')(this);
@@ -51,7 +53,7 @@ var Ravelry = function(opt, perm){
     this.products               = require('./methods/_products')(this);
     this.projects               = require('./methods/_projects')(this);
     this.queue                  = require('./methods/_queue')(this);
-    this.savedSearch            = require('./methods/_saved_search')(this);
+    this.savedSearch es           = require('./methods/_saved_searches')(this);
     this.shops                  = require('./methods/_shops')(this);
     this.stash                  = require('./methods/_stash')(this);
     this.stores                 = require('./methods/_stores')(this);
@@ -59,69 +61,6 @@ var Ravelry = function(opt, perm){
     this.upload                 = require('./methods/_upload')(this);
     this.volumes                = require('./methods/_volumes')(this);
     this.yarns                  = require('./methods/_yarns')(this);
-};
-
-Ravelry.prototype.currentUser = function(cb) {
-    var that = this;
-    if(this.user) return this.user;
-    var promise = new Promise(function(resolve, reject) {
-        this._get('/current_user.json', null, function(err, data){
-            if (err) {
-                return reject(err);
-            }
-            that.user = JSON.parse(data).user;
-            resolve(that.user);
-        });
-        if(cb){
-            promise
-                .then( function(data){ cb(null, data); })
-                .catch(cb);
-            return null;
-        }
-        return promise;
-    });
-};
-
-Ravelry.prototype.colorFamilies = function(cb) {
-    var that = this;
-    if(this.user) return this.user;
-    var promise = new Promise(function(resolve, reject) {
-        this._get('/color_families.json', null, function(err, data){
-            if (err) {
-                return reject(err);
-            }
-            that.user = JSON.parse(data).user;
-            resolve(that.user);
-        });
-        if(cb){
-            promise
-                .then( function(data){ cb(null, data); })
-                .catch(cb);
-            return null;
-        }
-        return promise;
-    });
-};
-
-Ravelry.prototype.yarnWeights = function(cb) {
-    var that = this;
-    if(this.user) return this.user;
-    var promise = new Promise(function(resolve, reject) {
-        this._get('/yarn_weights.json', null, function(err, data){
-            if (err) {
-                return reject(err);
-            }
-            that.user = JSON.parse(data).user;
-            resolve(that.user);
-        });
-        if(cb){
-            promise
-                .then( function(data){ cb(null, data); })
-                .catch(cb);
-            return null;
-        }
-        return promise;
-    });
 };
 
 Ravelry.prototype.signInUrl = function(cb){
@@ -144,20 +83,36 @@ Ravelry.prototype.signInUrl = function(cb){
     );
 };
 
+Ravelry.prototype.authorize = function (req, res, next) {
+    console.log('req url:',req.url);
+    if(req.url.match('oauth_verifier=') && this._responseUrl) {
+        console.log("Authorizing");
+        var that = this;
+        var queries = require('url').parse(req.url, true).query;
+
+        this._oauth_verifier = queries.oauth_verifier;
+        this.accessToken(function(err, data){
+            if(err) return err;
+
+            that.currentUser(function(err, user){
+                res.writeHead(302, {'Location': that._responseUrl});
+                res.end();
+            });
+        });
+    } else if (next) next(); // for use in Express
+};
+
 Ravelry.prototype.accessToken = function(cb){
     var that = this;
+
     this._oauth.getOAuthAccessToken(
         this._oauth_token,
         this._oauth_secret,
         this._oauth_verifier,
         function (err, oauth_access_token, oauth_access_token_secret, results){
-            if (err) return cb(err);
             that._access_token = oauth_access_token;
             that._access_secret = oauth_access_token_secret;
-            that.getUser(function(err, user){
-                if(err) return cb(err);
-                else return cb(null, user);
-            });
+            return cb(err, results);
         }
     );
 };

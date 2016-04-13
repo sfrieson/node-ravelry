@@ -1,17 +1,26 @@
 module.exports = function(that){
     var common = require('../utilities/commonCalls.js')(that);
-    return {
-        add: function(id, itemCode, cb){
-            return common.postParams(`/carts/${id}/add.json`, itemCode, cb);
+    var obj = {
+        add: function(id, params, cb){
+            // add(id, params[, cb])
+            return common.postParams(`/carts/${id}/add.json`, params, cb);
         },
-        create: function(storeId, cb){
-            return common.postParams('/carts/create.json', storeId, cb);
+        create: function(params, cb){
+            // create(params[, cb])
+            return common.postParams('/carts/create.json', params, cb);
         },
-        externalCheckout(id, paymentReference, cb){
-            return common.postParams(`/carts/${id}/external_checkout.json`, paymentReference, cb);
+        externalCheckout: function (id, params, cb){
+            // externalCheckout (id[, params, cb])
+            return common.postParams(`/carts/${id}/external_checkout.json`, params, cb);
         },
-        loveknittingCheckout(id, params, cb) {
-            return common.postParams(`/carts/loveknitting/${id}/external_checkout.json`, params, cb);
+        loveknitting: {
+            externalCheckout: function(id, params, cb){
+                // loveknitting.externalCheckout(id[, params, cb])
+                return common.postParams(`/carts/loveknitting/${id}/external_checkout.json`, params, cb);
+            }
         }
     };
+    obj.loveknittingCheckout = obj.loveknitting.externalCheckout;
+
+    return obj;
 };
