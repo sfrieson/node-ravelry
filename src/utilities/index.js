@@ -1,6 +1,6 @@
 var qs = require('querystring');
 
-exports.plusSeparated = function(arr){
+exports.plusSeparated = function (arr) {
     var list = "";
     for (var i = 0; i < arr.length; i++) {
         list += arr[i];

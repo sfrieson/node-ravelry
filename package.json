@@ -25,6 +25,6 @@
     "oauth": ">=0.9.0 <1.0.0"
   },
   "devDependencies": {
-    "cheerio": "^0.20.0"
+    "markdown-it": "^6.0.1"
   }
 }

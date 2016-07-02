@@ -30,13 +30,13 @@ var rav = new Ravelry(
 To authenticate your app, get to log-in url by using the method `signInUrl()`.  After the user arrives at the callback URL, the OAuth verifier will need to be set in the app. (Note: I am working on making this process easier.  It may change in coming versions.)
 
 ```
-http.createServer(function(req,res){
+http.createServer(function (req,res) {
 
   //When the user gets to this route redirect them to the Ravelry login
   if ( req.url === "/") {
 
     //Get the URL to the user's Ravelry sign-in page for your app
-    rav.signInUrl(function(err, url){
+    rav.signInUrl(function (err, url) {
       res.writeHead(302, {'Location': url} );
       res.end();
     });
@@ -52,7 +52,7 @@ http.createServer(function(req,res){
     rav._oauth_verifier = url.query.oauth_verifier;
 
     //Finish authentication of app. You will receive the user's info. You can access the authenticated API routes now.
-    rav.accessToken(function(err, user){
+    rav.accessToken(function (err, user) {
 
       res.writeHead(200, 'application/json');
       res.end(user);
@@ -99,13 +99,13 @@ Ex: `comments.create({type: "pattern", commented_id:573, body: "Wow!  What a won
 All methods can be used with callback functions. If a callback is not sent, it will return a promise.
 
 ```
-rav.colorFamilies( function(err, response){} );
+rav.colorFamilies( function (err, response) {} );
 ```
 or
 ```
 rav.colorFamilies()
-  .then( function(response){} )
-  .catch( function(err){} );
+  .then( function (response) {} )
+  .catch( function (err) {} );
 ```
 
 ## Please stay tuned for further documentation...
