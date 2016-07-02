@@ -1,12 +1,7 @@
 var qs = require('querystring');
 
 exports.plusSeparated = function (arr) {
-  var list = '';
-  for (var i = 0; i < arr.length; i++) {
-    list += arr[i];
-    if (arr[i + 1]) list += '+';
-  }
-  return list;
+  return arr.reduce(function (list, item) { return list + item + '+' }, '').replace(/\+$/,'');
 };
 
 exports.urlBuilder = function (base, endpoint, params) {
