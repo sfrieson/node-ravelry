@@ -68,7 +68,7 @@ Every endpoint in the [Ravelry API Documentation](http://www.ravelry.com/api) is
 
 #### Endpoints
 
-The methods are named the same way as the endpoint title is in the documentation are:
+The methods (with a few exceptions) are named the same way as the endpoint title is in the documentation are:
 
 [/favorites/list](http://www.ravelry.com/api#favorites_list) => `rav.favorites.list()`
 

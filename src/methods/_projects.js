@@ -43,7 +43,7 @@ module.exports = function (that) {
     },
     update: function (id, Project, cb) {
       // update(id, Project[, cb])
-      return common.postParams(`/projects/${username}/${id}.json`, Project, cb);
+      return common.postParams(`/projects/${that.user.username}/${id}.json`, Project, cb);
     }
   };
 };

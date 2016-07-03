@@ -23,7 +23,7 @@ module.exports = function (that) {
     },
     reorderPhotos: function (id, params, cb) {
       // reorderPhotos(id, params[, cb])
-      return common.postParams(`/people/${username}/stash/${id}/reorder_photos.json`, params, cb);
+      return common.postParams(`/people/${that.user.username}/stash/${id}/reorder_photos.json`, params, cb);
     },
     search: function (params, cb) {
       // search([params, cb])

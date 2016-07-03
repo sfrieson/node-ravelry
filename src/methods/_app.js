@@ -18,7 +18,7 @@ module.exports = function (that) {
       },
       set: function (keyValues, cb) {
         // config.set(keyValues[, cb])
-        var endpoint = '/app/config/set.json' + keys;
+        var endpoint = '/app/config/set.json';
         return common.postParams(endpoint, keyValues, cb);
       }
     },
@@ -39,7 +39,7 @@ module.exports = function (that) {
       },
       set: function (keyValues, cb) {
         // data.set(keyValues[, cb])
-        var endpoint = '/app/data/set.json' + keys;
+        var endpoint = '/app/data/set.json';
         return common.postParams(endpoint, keyValues, cb);
       }
     }
