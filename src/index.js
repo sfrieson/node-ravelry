@@ -1,4 +1,3 @@
-require('dotenv').config();
 var OAuth = require('oauth').OAuth;
 var u = require('./utilities');
 
@@ -94,9 +93,9 @@ Ravelry.prototype.authorize = function (req, res, next) {
       if (err) return err;
       // that._access_token is set
       // that._access_secret is set
-      that.currentUser(function (err, user) {
+      that.currentUser(function (err, data) {
         if (err) return err;
-        that.user = user;
+        that.user = data.user;
         res.writeHead(302, {'Location': that._responseUrl});
         res.end();
       });
