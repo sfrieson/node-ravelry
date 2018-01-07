@@ -1,14 +1,12 @@
-var API = require('../ravelry-api');
-
-module.exports = function (that) {
+module.exports = function (instance, API) {
   return {
     getUserIdParams: function (preUser, preId, postId, username, id, params, cb) {
       if (username && typeof username !== 'string') {
         cb = params;
         params = id;
         id = username;
-        username = that.user.username;
-      } else if (!username && username !== '') username = that.user && that.user.username ? that.user.username : ''; // User may not be logged in
+        username = instance.user.username;
+      } else if (!username && username !== '') username = instance.user && instance.user.username ? instance.user.username : ''; // User may not be logged in
       if (id === -1) id = '';
       if (typeof params !== 'object') {
         cb = params;
@@ -36,8 +34,8 @@ module.exports = function (that) {
       if (username && typeof username !== 'string') {
         cb = params;
         params = username;
-        username = that.user.username;
-      } else if (!username) username = that.user && that.user.username ? that.user.username : ''; // User may not be logged in
+        username = instance.user.username;
+      } else if (!username) username = instance.user && instance.user.username ? instance.user.username : ''; // User may not be logged in
       if (params && typeof params !== 'object') {
         cb = params;
         params = {};
@@ -48,15 +46,15 @@ module.exports = function (that) {
       if (username && typeof username !== 'string') {
         cb = id;
         id = username;
-        username = that.user.username;
-      } else if (!username) username = that.user && that.user.username ? that.user.username : ''; // User may not be logged in
+        username = instance.user.username;
+      } else if (!username) username = instance.user && instance.user.username ? instance.user.username : ''; // User may not be logged in
       return this.getUserIdParams(preUser, preId, postId, username, id, null, cb);
     },
     getUser: function (preUser, postUser, username, cb) {
       if (username && typeof username !== 'string') {
         cb = username;
-        username = that.user.username;
-      } else if (!username) username = that.user && that.user.username ? that.user.username : ''; // User may not be logged in
+        username = instance.user.username;
+      } else if (!username) username = instance.user && instance.user.username ? instance.user.username : ''; // User may not be logged in
       return this.getUserIdParams(preUser, postUser, '', username, -1, {}, cb);
     },
     getParams: function (endpoint, params, cb) {

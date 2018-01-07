@@ -24,6 +24,8 @@ module.exports = {
     );
 
     this.initialized = true;
+
+    return this;
   },
   getSignInUrl: function (cb) {
     this._oauth.getOAuthRequestToken(
