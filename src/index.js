@@ -38,16 +38,24 @@ var upload = require('./methods/upload');
 var volumes = require('./methods/volumes');
 var yarns = require('./methods/yarns');
 
-module.exports = function (options, permissions) {
-  var API = ravleryAPI.init(options, permissions);
-  const commonCalls = initCommonCalls(this, API);
+var instance = {
+  _initialized: false
+};
 
-  this.getSignInUrl = function (cb) {
+module.exports = function (options, permissions) {
+  if (!instance._initialized) init(options, permissions);
+  return instance;
+};
+
+function init (options, permissions) {
+  var API = ravleryAPI.init(options, permissions);
+  const commonCalls = initCommonCalls(instance, API);
+
+  instance.getSignInUrl = function (cb) {
     API.getSignInUrl(cb);
   };
 
-  this.authorize = function (req, res, next) {
-    console.log('req url:', req.url);
+  instance.authorize = function (req, res, next) {
     if (req.url.match('oauth_verifier=') && API._responseUrl) {
       console.log('Authorizing');
       var queries = require('url').parse(req.url, true).query;
@@ -57,52 +65,54 @@ module.exports = function (options, permissions) {
         if (err) return err;
         // that._access_token already set
         // that._access_secret already set
-        this.currentUser(function (err, data) {
+        instance.currentUser(function (err, data) {
           if (err) return err;
-          this.user = data.user;
+          instance.user = data.user;
           res.writeHead(302, {'Location': API._responseUrl});
           res.end();
-        }.bind(this));
-      }.bind(this));
+        });
+      });
     } else if (next) next(); // for use in Express
   };
 
-  // Can't use prototype because they need access to this context
-  this.misc = misc(this, commonCalls);
-  this.currentUser = this.misc.currentUser; // Convenience. TODO: Check that this works
-  this.app = app(this, commonCalls);
-  this.bundledItems = bundledItems(this, commonCalls);
-  this.bundles = bundles(this, commonCalls);
-  this.carts = carts(this, commonCalls);
-  this.comments = comments(this, commonCalls);
-  this.deliveries = deliveries(this, commonCalls);
-  this.extras = extras(this, commonCalls);
-  this.favorites = favorites(this, commonCalls);
-  this.fiber = fiber(this, commonCalls);
-  this.forumPosts = forumPosts(this, commonCalls);
-  this.forums = forums(this, commonCalls);
-  this.friends = friends(this, commonCalls);
-  this.groups = groups(this, commonCalls);
-  this.inStoreSales = inStoreSales(this, commonCalls);
-  this.library = library(this, commonCalls);
-  this.messages = messages(this, commonCalls);
-  this.needles = needles(this, commonCalls);
-  this.packs = packs(this, commonCalls);
-  this.pages = pages(this, commonCalls);
-  this.patternSources = patternSources(this, commonCalls);
-  this.patterns = patterns(this, commonCalls);
-  this.people = people(this, commonCalls);
-  this.photos = photos(this, commonCalls);
-  this.productAttachments = productAttachments(this, commonCalls);
-  this.products = products(this, commonCalls);
-  this.projects = projects(this, commonCalls);
-  this.queue = queue(this, commonCalls);
-  this.savedSearches = savedSearches(this, commonCalls);
-  this.shops = shops(this, commonCalls);
-  this.stash = stash(this, commonCalls);
-  this.stores = stores(this, commonCalls);
-  this.topics = topics(this, commonCalls);
-  this.upload = upload(this, commonCalls);
-  this.volumes = volumes(this, commonCalls);
-  this.yarns = yarns(this, commonCalls);
-};
+  // Can't use prototype because they need access to instance context
+  instance.misc = misc(instance, commonCalls);
+  instance.currentUser = instance.misc.currentUser;
+  instance.app = app(instance, commonCalls);
+  instance.bundledItems = bundledItems(instance, commonCalls);
+  instance.bundles = bundles(instance, commonCalls);
+  instance.carts = carts(instance, commonCalls);
+  instance.comments = comments(instance, commonCalls);
+  instance.deliveries = deliveries(instance, commonCalls);
+  instance.extras = extras(instance, commonCalls);
+  instance.favorites = favorites(instance, commonCalls);
+  instance.fiber = fiber(instance, commonCalls);
+  instance.forumPosts = forumPosts(instance, commonCalls);
+  instance.forums = forums(instance, commonCalls);
+  instance.friends = friends(instance, commonCalls);
+  instance.groups = groups(instance, commonCalls);
+  instance.inStoreSales = inStoreSales(instance, commonCalls);
+  instance.library = library(instance, commonCalls);
+  instance.messages = messages(instance, commonCalls);
+  instance.needles = needles(instance, commonCalls);
+  instance.packs = packs(instance, commonCalls);
+  instance.pages = pages(instance, commonCalls);
+  instance.patternSources = patternSources(instance, commonCalls);
+  instance.patterns = patterns(instance, commonCalls);
+  instance.people = people(instance, commonCalls);
+  instance.photos = photos(instance, commonCalls);
+  instance.productAttachments = productAttachments(instance, commonCalls);
+  instance.products = products(instance, commonCalls);
+  instance.projects = projects(instance, commonCalls);
+  instance.queue = queue(instance, commonCalls);
+  instance.savedSearches = savedSearches(instance, commonCalls);
+  instance.shops = shops(instance, commonCalls);
+  instance.stash = stash(instance, commonCalls);
+  instance.stores = stores(instance, commonCalls);
+  instance.topics = topics(instance, commonCalls);
+  instance.upload = upload(instance, commonCalls);
+  instance.volumes = volumes(instance, commonCalls);
+  instance.yarns = yarns(instance, commonCalls);
+
+  instance._initialized = true;
+}

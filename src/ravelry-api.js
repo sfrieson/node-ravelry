@@ -11,8 +11,10 @@ module.exports = {
     this._ravAccessKey = options.ravAccessKey;
     this._ravSecretKey = options.ravSecretKey;
     this._ravPersonalKey = options.ravPersonalKey || null; // TODO Implement usage
-    this._callbackUrl = options.callbackUrl || 'oob'; // as per OAuth 1.0A spec
-    this._responseUrl = options.responseUrl; // for more seamless login
+    // Defaults to 'oob' as per OAuth 1.0A spec
+    this._callbackUrl = options.callbackUrl || 'oob';
+    // Aids in for more seamless login for user
+    this._responseUrl = options.responseUrl;
     this._oauth = new OAuth(
       'https://www.ravelry.com/oauth/request_token' + (permissions ? '?scope=' + permissions.join('+') : ''),
       'https://www.ravelry.com/oauth/access_token',
@@ -30,7 +32,6 @@ module.exports = {
   getSignInUrl: function (cb) {
     this._oauth.getOAuthRequestToken(
       function (err, oauthToken, oauthSecret, results) {
-        console.log('getOAuthRequestToken callback', arguments);
         if (err) return cb(err);
         else {
           this._oauth_token = oauthToken;
@@ -67,7 +68,7 @@ module.exports = {
       cb = params;
       params = '';
     }
-
+    console.log('GET', endpoint + utils.toQueryString(params));
     this._oauth.get(
       API_ROOT + endpoint + utils.toQueryString(params),
       this._access_token,
@@ -77,6 +78,7 @@ module.exports = {
   },
   post: function (endpoint, content, cb) {
     if (typeof content === 'object') content = JSON.stringify(content);
+    console.log('POST', endpoint, content);
     this._oauth.post(
       API_ROOT + endpoint,
       this._access_token,
@@ -88,6 +90,7 @@ module.exports = {
   },
   put: function (endpoint, content, cb) {
     if (content) content = JSON.stringify(content);
+    console.log('PUT', endpoint + content);
     this._oauth.put(
       API_ROOT + endpoint,
       this._access_token,
@@ -98,6 +101,7 @@ module.exports = {
     );
   },
   delete: function (endpoint, cb) {
+    console.log('DELETE', endpoint);
     this._oauth.delete(
       API_ROOT + endpoint,
       this._access_token,

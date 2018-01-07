@@ -1,45 +1,47 @@
+var utils = require('../utilities');
+
 module.exports = function (instance, common) {
   return {
     config: {
-      delete: function (KeyValArr, cb) {
-        // config.delete(KeyValArr[, cb])
+      delete: function (keyArr, cb) {
+        // config.delete(keyArr[, cb])
         var keys = '';
-        if (KeyValArr) keys = '?keys=' + KeyValArr.join('+');
+        if (keyArr) keys = '?keys=' + keyArr.join('+');
         var endpoint = '/app/config/delete.json' + keys;
         return common.post(endpoint, cb);
       },
-      get: function (KeyValArr, cb) {
-        // config.get([KeyValArr, cb])
+      get: function (keyArr, cb) {
+        // config.get([keyArr, cb])
         var keys = '';
-        if (KeyValArr) keys = '?keys=' + KeyValArr.join('+');
+        if (keyArr) keys = '?keys=' + keyArr.join('+');
         var endpoint = '/app/config/get.json' + keys;
         return common.get(endpoint, cb);
       },
-      set: function (keyValues, cb) {
-        // config.set(keyValues[, cb])
-        var endpoint = '/app/config/set.json';
-        return common.postParams(endpoint, keyValues, cb);
+      set: function (object, cb) {
+        // config.set(object[, cb])
+        var endpoint = '/app/config/set.json' + utils.toQueryString(object);
+        return common.post(endpoint, cb);
       }
     },
     data: {
-      delete: function (KeyValArr, cb) {
-        // data.delete(KeyValArr[, cb])
+      delete: function (keyArr, cb) {
+        // data.delete(keyArr[, cb])
         var keys = '';
-        if (KeyValArr) keys = '?keys=' + KeyValArr.join('+');
+        if (keyArr) keys = '?keys=' + keyArr.join('+');
         var endpoint = '/app/data/delete.json' + keys;
         return common.post(endpoint, cb);
       },
-      get: function (KeyValArr, cb) {
-        // data.get([KeyValArr, cb])
+      get: function (keyArr, cb) {
+        // data.get([keyArr, cb])
         var keys = '';
-        if (KeyValArr) keys = '?keys=' + KeyValArr.join('+');
+        if (keyArr) keys = '?keys=' + keyArr.join('+');
         var endpoint = '/app/data/get.json' + keys;
         return common.get(endpoint, cb);
       },
-      set: function (keyValues, cb) {
+      set: function (object, cb) {
         // data.set(keyValues[, cb])
-        var endpoint = '/app/data/set.json';
-        return common.postParams(endpoint, keyValues, cb);
+        var endpoint = '/app/data/set.json' + utils.toQueryString(object);
+        return common.post(endpoint, cb);
       }
     }
   };
