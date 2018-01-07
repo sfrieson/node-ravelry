@@ -7,6 +7,10 @@ module.exports = function (instance, common) {
     delete: function (id, cb) {
       // delete(id[, cb])
       return common.delete(`/comments/${id}.json`, cb);
+    },
+    list: function (cb) {
+      // list([cb])
+      return common.get(`/people/${instance.user.username}/comments/list.json`, cb);
     }
   };
 };
