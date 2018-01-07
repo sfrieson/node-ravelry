@@ -1,3 +1,5 @@
+var API = require('../ravelry-api');
+
 module.exports = function (that) {
   return {
     getUserIdParams: function (preUser, preId, postId, username, id, params, cb) {
@@ -6,7 +8,7 @@ module.exports = function (that) {
         params = id;
         id = username;
         username = that.user.username;
-      } else if (!username) username = that.user && that.user.username ? that.user.username : ''; // User may not be logged in
+      } else if (!username && username !== '') username = that.user && that.user.username ? that.user.username : ''; // User may not be logged in
       if (id === -1) id = '';
       if (typeof params !== 'object') {
         cb = params;
@@ -16,7 +18,7 @@ module.exports = function (that) {
 
       var endpoint = preUser + username + preId + id + postId;
       var promise = new Promise(function (resolve, reject) {
-        that._get(endpoint, params, function (err, data) {
+        API.get(endpoint, params, function (err, data) {
           if (err) return reject(err);
           resolve(JSON.parse(data));
         });
@@ -65,11 +67,25 @@ module.exports = function (that) {
       return this.getUserIdParams(endpoint, '', '', '', -1, params, cb);
     },
     get: function (endpoint, cb) {
-      return this.getUserIdParams(endpoint, '', '', '', -1, {}, cb);
+      // return this.getUserIdParams(endpoint, '', '', '', -1, {}, cb);
+      var promise = new Promise(function (resolve, reject) {
+        API.get(endpoint, function (err, data) {
+          if (err) return reject(err);
+          resolve(JSON.parse(data));
+        });
+      });
+
+      if (cb) {
+        promise
+        .then(function (res) { cb(null, res); })
+        .catch(cb);
+        return null;
+      }
+      return promise;
     },
     postParams: function (endpoint, params, cb) {
       var promise = new Promise(function (resolve, reject) {
-        that._post(endpoint, params, function (err, data) {
+        API.post(endpoint, params, function (err, data) {
           if (err) return reject(err);
           resolve(JSON.parse(data));
         });
@@ -88,7 +104,7 @@ module.exports = function (that) {
     },
     putParams: function (endpoint, params, cb) {
       var promise = new Promise(function (resolve, reject) {
-        that._put(endpoint, params, function (err, data) {
+        API.put(endpoint, params, function (err, data) {
           if (err) return reject(err);
           resolve(JSON.parse(data));
         });
@@ -104,7 +120,7 @@ module.exports = function (that) {
     },
     delete: function (endpoint, cb) {
       var promise = new Promise(function (resolve, reject) {
-        that._delete(endpoint, function (err, data) {
+        API.delete(endpoint, function (err, data) {
           if (err) return reject(err);
           resolve(JSON.parse(data));
         });

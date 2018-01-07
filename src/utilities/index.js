@@ -9,3 +9,8 @@ exports.urlBuilder = function (base, endpoint, params) {
   // console.log('Built:', base + endpoint + params);
   return base + endpoint + params;
 };
+
+exports.toQueryString = function (object) {
+  if (!object) return '';
+  return '?' + qs.stringify(object);
+};
