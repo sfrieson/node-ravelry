@@ -4,18 +4,41 @@ var utils = require('./utilities');
 
 var API_ROOT = 'https://api.ravelry.com';
 
-module.exports = {
-  init: function (options, permissions) {
-    if (this.initialized) return this;
+module.exports = function (authorization, options, permissions) {
+  const instance = {
+    ravAccessKey: options.ravAccessKey,
+    ravSecretKey: options.ravSecretKey,
+    api: {}
+  };
 
-    this._ravAccessKey = options.ravAccessKey;
-    this._ravSecretKey = options.ravSecretKey;
-    this._ravPersonalKey = options.ravPersonalKey || null; // TODO Implement usage
-    // Defaults to 'oob' as per OAuth 1.0A spec
-    this._callbackUrl = options.callbackUrl || 'oob';
-    // Aids in for more seamless login for user
-    this._responseUrl = options.responseUrl;
-    this._oauth = new OAuth(
+  if (authorization === 'basic') {
+    addBasic(options, instance);
+    addBasicMethods(instance);
+  }
+  if (authorization === 'oauth1.0') {
+    addOAuth(options, permissions, instance);
+    addOAuthMethods(instance);
+  }
+  addMethods(instance);
+  return instance.api;
+};
+
+function addBasic (options, instance) {
+  Object.assign(instance, {
+    ravPersonalKey: options.ravPersonalKey,
+    auth: function () {
+      // implementation to come
+    }
+  });
+}
+function addOAuth (options, permissions, instance) {
+  Object.assign(instance, {
+    ravSecretKey: options.ravSecretKey,
+    // Defaults to 'oob' as per OAuth 1.0A specification
+    callbackUrl: options.callbackUrl || 'oob',
+    // Aids in more seamless login for user
+    responseUrl: options.responseUrl,
+    auth: new OAuth(
       'https://www.ravelry.com/oauth/request_token' + (permissions ? '?scope=' + permissions.join('+') : ''),
       'https://www.ravelry.com/oauth/access_token',
       options.ravAccessKey,
@@ -23,90 +46,142 @@ module.exports = {
       '1.0A',
       this._callbackUrl,
       'HMAC-SHA1'
-    );
+    )
+  });
+}
 
-    this.initialized = true;
+function addBasicMethods (instance) {
+  Object.assign(instance.api, {
+    get: function (endpoint, cb) {
 
-    return this;
-  },
-  getSignInUrl: function (cb) {
-    this._oauth.getOAuthRequestToken(
-      function (err, oauthToken, oauthSecret, results) {
-        if (err) return cb(err);
-        else {
-          this._oauth_token = oauthToken;
-          this._oauth_secret = oauthSecret;
-          var url = this._oauth.signUrl(
-            'https://www.ravelry.com/oauth/authorize',
-            this._oauth_token,
-            this._oauth_secret,
-            'GET'
-          );
+    },
+    post: function (endpoint, params, cb) {
 
-          cb(null, url);
-        }
-      }.bind(this)
-    );
-  },
-  getAccessToken: function (cb) {
-    this._oauth.getOAuthAccessToken(
-      this._oauth_token,
-      this._oauth_secret,
-      this._oauth_verifier,
-      function (err, oauthAccessToken, oauthAccessTokenSecret, results) {
-        this._access_token = oauthAccessToken;
-        this._access_secret = oauthAccessTokenSecret;
-        return cb(err, results);
-      }.bind(this)
-    );
-  },
+    },
+    put: function (endpoint, params, cb) {
 
-  // -----------------
-  // Ravelry API calls
-  get: function (endpoint, params, cb) {
-    if (typeof params === 'function') {
-      cb = params;
-      params = '';
+    },
+    delete: function (endpoint, cb) {
+
     }
-    console.log('GET', endpoint + utils.toQueryString(params));
-    this._oauth.get(
-      API_ROOT + endpoint + utils.toQueryString(params),
-      this._access_token,
-      this._access_secret,
-      cb // args: err, data, response
-    );
-  },
-  post: function (endpoint, content, cb) {
-    if (typeof content === 'object') content = JSON.stringify(content);
-    console.log('POST', endpoint, content);
-    this._oauth.post(
-      API_ROOT + endpoint,
-      this._access_token,
-      this._access_secret,
-      content,
-      'application/json',
-      cb // args: err, data, response
-    );
-  },
-  put: function (endpoint, content, cb) {
-    if (content) content = JSON.stringify(content);
-    console.log('PUT', endpoint + content);
-    this._oauth.put(
-      API_ROOT + endpoint,
-      this._access_token,
-      this._access_secret,
-      content,
-      'application/json',
-      cb // args: err, data, response
-    );
-  },
-  delete: function (endpoint, cb) {
-    console.log('DELETE', endpoint);
-    this._oauth.delete(
-      API_ROOT + endpoint,
-      this._access_token,
-      this._access_secret,
-      cb // args: err, data, response
-    );
-  }
-};
+  });
+}
+
+function addOAuthMethods (instance) {
+  Object.assign(instance.api, {
+    getSignInUrl: function (cb) {
+      instance.auth.getOAuthRequestToken(
+        function (err, oauthToken, oauthSecret, results) {
+          if (err) return cb(err);
+          else {
+            instance.oauthToken = oauthToken;
+            instance.oauthSecret = oauthSecret;
+            var url = instance.auth.signUrl(
+              'https://www.ravelry.com/oauth/authorize',
+              instance.oauthToken,
+              instance.oauthSecret,
+              'GET'
+            );
+
+            cb(null, url);
+          }
+        }
+      );
+    },
+    getAccessToken: function (oauthVerifier, cb) {
+      if (!oauthVerifier) {
+        // TODO check wording
+        return new Error('You must supply the OAuth verifier from the authorization response');
+      }
+      instance.auth.getOAuthAccessToken(
+        instance.oauthToken,
+        instance.oauthSecret,
+        oauthVerifier,
+        function (err, oauthAccessToken, oauthAccessTokenSecret, results) {
+          instance.accessToken = oauthAccessToken;
+          instance.accessSecret = oauthAccessTokenSecret;
+          return cb(err, results);
+        }
+      );
+    },
+    get: function (endpoint, cb) {
+      instance.auth.get(
+        API_ROOT + endpoint,
+        instance.accessToken,
+        instance.accessSecret,
+        cb // args: err, data, response
+      );
+    },
+    post: function (endpoint, params, cb) {
+      instance.auth.post(
+        API_ROOT + endpoint,
+        instance.accessToken,
+        instance.accessSecret,
+        params,
+        'application/json',
+        cb // args: err, data, response
+      );
+    },
+    put: function (endpoint, params, cb) {
+      instance.auth.put(
+        API_ROOT + endpoint,
+        instance.accessToken,
+        instance.accessSecret,
+        params,
+        'application/json',
+        cb // args: err, data, response
+      );
+    },
+    delete: function (endpoint, cb) {
+      instance.auth.delete(
+        API_ROOT + endpoint,
+        instance.accessToken,
+        instance.accessSecret,
+        cb // args: err, data, response
+      );
+    }
+  });
+}
+
+function addMethods (instance) {
+  Object.assign(instance.api, {
+    // -----------------
+    // Ravelry API calls
+    get: function (endpoint, params, cb) {
+      if (typeof params === 'function') {
+        cb = params;
+        params = '';
+      }
+      console.log('GET', endpoint + utils.toQueryString(params));
+      instance.get(
+        API_ROOT + endpoint + utils.toQueryString(params),
+        cb // args: err, data, response
+      );
+    },
+    post: function (endpoint, content, cb) {
+      if (typeof content === 'object') content = JSON.stringify(content);
+      console.log('POST', endpoint, content);
+      instance.post(
+        API_ROOT + endpoint,
+        content,
+        cb // args: err, data, response
+      );
+    },
+    put: function (endpoint, content, cb) {
+      if (content) content = JSON.stringify(content);
+      console.log('PUT', endpoint + content);
+      instance.put(
+        API_ROOT + endpoint,
+        content,
+        cb // args: err, data, response
+      );
+    },
+    delete: function (endpoint, cb) {
+      console.log('DELETE', endpoint);
+      instance.delete(
+        API_ROOT + endpoint,
+        cb // args: err, data, response
+      );
+    }
+  });
+}

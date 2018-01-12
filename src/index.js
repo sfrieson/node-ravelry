@@ -42,38 +42,51 @@ var instance = {
   _initialized: false
 };
 
-module.exports = function (options, permissions) {
-  if (!instance._initialized) init(options, permissions);
-  return instance;
+module.exports = {
+  basic: function (options) {
+    if (!instance._initialized) init('basic_auth', options);
+    return instance;
+  },
+  oauth1: function (options, permissions) {
+    if (!instance._initialized) init('oauth1.0', options, permissions);
+    return instance;
+  }
 };
 
-function init (options, permissions) {
-  var API = ravleryAPI.init(options, permissions);
+function init (authorization, options, permissions) {
+  var API = ravleryAPI(authorization, options, permissions);
   const commonCalls = initCommonCalls(instance, API);
 
-  instance.getSignInUrl = function (cb) {
-    API.getSignInUrl(cb);
-  };
-
-  instance.authorize = function (req, res, next) {
-    if (req.url.match('oauth_verifier=') && API._responseUrl) {
-      console.log('Authorizing');
-      var queries = require('url').parse(req.url, true).query;
-
-      API._oauth_verifier = queries.oauth_verifier;
-      API.getAccessToken(function (err, data) {
-        if (err) return err;
-        // that._access_token already set
-        // that._access_secret already set
-        instance.currentUser(function (err, data) {
-          if (err) return err;
-          instance.user = data.user;
-          res.writeHead(302, {'Location': API._responseUrl});
-          res.end();
+  if (authorization === 'oauth1.0') {
+    instance.getSignInUrl = function (cb) {
+      return new Promise(function (resolve, reject) {
+        API.getSignInUrl(function (err, result) {
+          if (cb) return cb(err, result);
+          if (err) reject(err);
+          else resolve(result);
         });
       });
-    } else if (next) next(); // for use in Express
-  };
+    };
+
+    instance.authorize = function (req, res, next) {
+      if (req.url.match('oauth_verifier=') && API._responseUrl) {
+        console.log('Authorizing');
+        var queries = require('url').parse(req.url, true).query;
+
+        API.getAccessToken(queries.oauth_verifier, function (err, data) {
+          if (err) return err;
+          // that._access_token already set
+          // that._access_secret already set
+          instance.currentUser(function (err, data) {
+            if (err) return err;
+            instance.user = data.user;
+            res.writeHead(302, {'Location': API._responseUrl});
+            res.end();
+          });
+        });
+      } else if (next) next(); // for use in Express
+    };
+  }
 
   // Can't use prototype because they need access to instance context
   instance.misc = misc(instance, commonCalls);
