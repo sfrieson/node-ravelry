@@ -72,23 +72,14 @@ module.exports = function (instance, API) {
       } else return API.get(endpoint);
     },
     postParams: function (endpoint, params, cb) {
-      var promise = new Promise(function (resolve, reject) {
-        API.post(endpoint, params, function (err, data) {
-          if (err) return reject(err);
-          resolve(JSON.parse(data));
-        });
-      });
-
       if (cb) {
-        promise
-        .then(function (res) { cb(null, res); })
-        .catch(cb);
-        return null;
-      }
-      return promise;
+        API.post(endpoint, params)
+        .then((res) => cb(null, res))
+        .catch(err => cb(err));
+      } else return API.post(endpoint, params);
     },
     post: function (endpoint, cb) {
-      this.postParams(endpoint, {}, cb);
+      return this.postParams(endpoint, null, cb);
     },
     putParams: function (endpoint, params, cb) {
       var promise = new Promise(function (resolve, reject) {

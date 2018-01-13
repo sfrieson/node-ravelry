@@ -1,6 +1,6 @@
 {
   "name": "ravelry_src",
-  "version": "1.0.0",
+  "version": "0.1.7",
   "description": "Development for the Ravelry module.",
   "main": "index.js",
   "scripts": {

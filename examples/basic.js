@@ -5,9 +5,8 @@ var rav = Ravelry.basic({
 });
 
 rav.misc.currentUser()
-.then(function (data) {
-  console.log(`Good job ${data.user.username}. You are authorized.`);
-})
-.catch(function (err) {
-  console.log(err);
-});
+.then(data => console.log(`Good job ${data.user.username}. You are authorized.`))
+.then(() => rav.app.data.set({foo: 'bar'}))
+.then(() => rav.app.data.get(['foo']))
+.then(res => console.log(`\`foo\` is set to \`${res.data.foo}\``))
+.catch(err => console.log('Error:', err));

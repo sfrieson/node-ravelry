@@ -31,11 +31,10 @@ module.exports = function (instance, common) {
         var endpoint = '/app/data/delete.json' + keys;
         return common.post(endpoint, cb);
       },
-      get: function (keyArr, cb) {
-        // data.get([keyArr, cb])
-        var keys = '';
-        if (keyArr) keys = '?keys=' + keyArr.join('+');
-        var endpoint = '/app/data/get.json' + keys;
+      get: function (keysArrOrStr, cb) {
+        // data.get([keysArrOrStr:Array|String, cb])
+        var endpoint = '/app/data/get.json?keys=';
+        endpoint += typeof keysArrOrStr === 'object' ? keysArrOrStr.join('+') : keysArrOrStr;
         return common.get(endpoint, cb);
       },
       set: function (object, cb) {

@@ -34,9 +34,9 @@ function addBasic (options, instance) {
   Object.assign(instance, {
     ravPersonalKey: options.ravPersonalKey,
     auth: {
-      get: function (path) {
+      get: function (opt) {
         return new Promise(function (resolve, reject) {
-          https.get(Object.assign({path: path}, authorization), function (res) {
+          https.get(Object.assign(opt, authorization), function (res) {
             var data = '';
 
             res.setEncoding('utf8');
@@ -48,9 +48,9 @@ function addBasic (options, instance) {
           });
         });
       },
-      post: function (path, body) {
+      post: function (opt, body) {
         return new Promise(function (resolve, reject) {
-          var req = https.post(Object.assign({path: path}, authorization), function (res) {
+          var req = https.request(Object.assign(opt, authorization), function (res) {
             var data = '';
 
             res.setEncoding('utf8');
@@ -61,7 +61,10 @@ function addBasic (options, instance) {
             });
           });
 
-          if (body) req.write(JSON.stringify(body));
+          req.on('error', reject);
+
+          if (body) req.write(body);
+          req.end();
         });
       },
       put: function (path, body, cb) {
@@ -77,12 +80,15 @@ function addBasic (options, instance) {
             });
           });
 
+          req.on('error', reject);
+
           if (body) req.write(JSON.stringify(body));
+          req.end();
         });
       },
       delete: function (path, cb) {
         return new Promise(function (resolve, reject) {
-          https.delete(Object.assign({path: path}, authorization), function (res) {
+          var req = https.delete(Object.assign({path: path}, authorization), function (res) {
             var data = '';
 
             res.setEncoding('utf8');
@@ -92,6 +98,9 @@ function addBasic (options, instance) {
               else reject(data);
             });
           });
+          
+          req.on('error', reject);
+          req.end();
         });
       }
     }
@@ -119,8 +128,28 @@ function addOAuth (options, permissions, instance) {
 
 function addBasicMethods (instance) {
   Object.assign(instance.api, {
-    get: instance.auth.get,
-    post: instance.auth.post,
+    get: function (endpoint) {
+      return instance.auth.get({
+        method: 'GET',
+        path: endpoint
+      });
+    },
+    post: function (endpoint, body) {
+      const options = {
+        method: 'POST',
+        path: endpoint
+      };
+
+      if (body) {
+        body = JSON.stringify(body);
+        options.headers = {
+          'Content-Type': 'application/json',
+          'Content-Length': body.length
+        };
+      }
+
+      return instance.auth.post(options, body);
+    },
     put: instance.auth.put,
     delete: instance.auth.delete
   });
