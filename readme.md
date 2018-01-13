@@ -23,6 +23,8 @@ var rav = Ravelry.basic({
 ```
 Basic authorization is used for accessing the Ravelry's API endpoints that don't need authorization as well as your personal account's data.  If that's all you need, you're good to go from here.  If you need to support accessing other users' data, then you'll need to use OAuth.
 
+See the examples folder for a more fleshed out example of basic auth.
+
 ### OAuth1.0
 ```
 var Ravelry = require('ravelry');

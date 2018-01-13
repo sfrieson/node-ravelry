@@ -1,4 +1,4 @@
-var utils = require('./utilities');
+var utils = require('../utilities');
 
 module.exports = function (instance, common) {
   return {

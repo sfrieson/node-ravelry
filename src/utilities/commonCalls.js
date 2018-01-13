@@ -65,21 +65,11 @@ module.exports = function (instance, API) {
       return this.getUserIdParams(endpoint, '', '', '', -1, params, cb);
     },
     get: function (endpoint, cb) {
-      // return this.getUserIdParams(endpoint, '', '', '', -1, {}, cb);
-      var promise = new Promise(function (resolve, reject) {
-        API.get(endpoint, function (err, data) {
-          if (err) return reject(err);
-          resolve(JSON.parse(data));
-        });
-      });
-
       if (cb) {
-        promise
-        .then(function (res) { cb(null, res); })
-        .catch(cb);
-        return null;
-      }
-      return promise;
+        API.get(endpoint)
+        .then((res) => cb(null, res))
+        .catch(err => cb(err));
+      } else return API.get(endpoint);
     },
     postParams: function (endpoint, params, cb) {
       var promise = new Promise(function (resolve, reject) {
