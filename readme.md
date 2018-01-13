@@ -1,11 +1,11 @@
-# Ravelry API
+# 🧣 Ravelry API
 
 **CURRENTLY IN DEVELOPMENT USE AT YOUR OWN RISK**
 
 A way to make calls to all of the endpoints offered by the Ravelry API.
 
 Currently testing all of the endpoints. Documentation to follow soon.
-Please reach out if you'd like to help with either. :)
+Please reach out if you'd like to help with either. 😄
 
 ***
 
@@ -41,7 +41,7 @@ To authenticate your app, get the log-in url from Ravelry using the method `sign
 
 ```
 var URL = require('url');
-http.createServer(function (req,res) {
+http.createServer(function (req, res) {
 
   // When the user gets to this route redirect them to the Ravelry login
   if ( req.url === "/") {
