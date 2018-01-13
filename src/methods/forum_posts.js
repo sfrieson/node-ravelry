@@ -1,3 +1,5 @@
+var utils = require('./utilities');
+
 module.exports = function (instance, common) {
   return {
     show: function (id, cb) {
@@ -6,7 +8,10 @@ module.exports = function (instance, common) {
     },
     unread: function (params, cb) {
       // unread[(params, cb])
-      return common.get('/forum_posts/unread.json', params, cb);
+      return common.get(
+        '/forum_posts/unread.json' + utils.toQueryString(params),
+        cb
+      );
     },
     update: function (id, params, cb) {
       // update(id, params[, cb])
