@@ -4,6 +4,10 @@ module.exports = function (instance, common) {
       // comments(id[, params, cb])
       return common.getParams(`/patterns/${id}/comments.json`, params, cb);
     },
+    patterns: function (params, cb) {
+      // projects(id[, params, cb])
+      return common.getParams(`/patterns.json`, params, cb);
+    },
     projects: function (id, params, cb) {
       // projects(id[, params, cb])
       return common.getParams(`/patterns/${id}/projects.json`, params, cb);

@@ -1,10 +1,8 @@
 module.exports = function (instance, common) {
-  var obj = {
+  return {
     search: function (params, cb) {
       // search([params, cb])
-      return common.getParams('/groups/search.json', params, cb);
+      return common.getParams('/yarns_companies/search.json', params, cb);
     }
   };
-  obj.groups = obj.search;
-  return obj;
 };

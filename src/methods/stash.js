@@ -1,5 +1,5 @@
 module.exports = function (instance, common) {
-  var obj = {
+  return {
     comments: function (username, id, params, cb) {
       // comments([username,] id[, params, cb])
       return common.getUserIdParams('/people/', '/stash/', '/comments.json', username, id, params, cb);
@@ -32,17 +32,15 @@ module.exports = function (instance, common) {
       // show([username,] id[, cb])
       return common.getUserId('/people/', '/stash/', '.json', username, id, cb);
     },
-    update: function (id, Stash, cb) {
-      // update(id, Stash[, cb])
-      return common.postParams(`/people/${instance.user.username}/stash/${id}.json`, Stash, cb);
-    },
     unified: {
       list: function (username, params, cb) {
         // unified.list([username, params, cb])
         return common.getUserParams('/people/', '/stash/unified/list.json', username, params, cb);
       }
+    },
+    update: function (id, Stash, cb) {
+      // update(id, Stash[, cb])
+      return common.postParams(`/people/${instance.user.username}/stash/${id}.json`, Stash, cb);
     }
   };
-  obj.unifiedList = obj.unified.list;
-  return obj;
 };

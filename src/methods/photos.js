@@ -4,6 +4,10 @@ module.exports = function (instance, common) {
       // delete(id[, cb])
       return common.delete(`/photos/${id}.json`, cb);
     },
+    dimensions: function (params, cb) {
+      // sizes(id[, cb])
+      return common.get(`/photos/dimensions.json`, params, cb);
+    },
     sizes: function (id, cb) {
       // sizes(id[, cb])
       return common.get(`/photos/${id}/sizes.json`, cb);

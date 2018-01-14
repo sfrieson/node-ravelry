@@ -1,5 +1,5 @@
 module.exports = function (instance, common) {
-  var obj = {
+  return {
     loveknitting: {
       export: function (params, cb) {
         // loveknitting.export(params[, cb])
@@ -11,7 +11,4 @@ module.exports = function (instance, common) {
       }
     }
   };
-  obj.export = obj.loveknitting.export;
-  obj.updateStatus = obj.loveknitting.updateStatus;
-  return obj;
 };

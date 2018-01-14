@@ -1,5 +1,5 @@
 module.exports = function (instance, common) {
-  var obj = {
+  return {
     add: function (id, params, cb) {
       // add(id, params[, cb])
       return common.postParams(`/carts/${id}/add.json`, params, cb);
@@ -19,7 +19,4 @@ module.exports = function (instance, common) {
       }
     }
   };
-  obj.loveknittingCheckout = obj.loveknitting.externalCheckout;
-
-  return obj;
 };

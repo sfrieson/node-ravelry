@@ -7,6 +7,10 @@ module.exports = function (instance, common) {
     show: function (id, cb) {
       // show(id[, cb])
       return common.get(`/yarns/${id}.json`, cb);
+    },
+    yarns: function (params, cb) {
+      // yarns([params, cb])
+      return common.getParams('/yarns.json', params, cb);
     }
   };
 };
