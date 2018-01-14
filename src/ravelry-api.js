@@ -98,7 +98,7 @@ function addBasic (options, instance) {
               else reject(data);
             });
           });
-          
+
           req.on('error', reject);
           req.end();
         });
@@ -110,8 +110,7 @@ function addBasic (options, instance) {
 function addOAuth (options, permissions, instance) {
   Object.assign(instance, {
     ravSecretKey: options.ravSecretKey,
-    // Defaults to 'oob' as per OAuth 1.0A specification
-    callbackUrl: options.callbackUrl || 'oob',
+    callbackUrl: options.callbackUrl,
     // Aids in more seamless login for user
     responseUrl: options.responseUrl,
     auth: new OAuth(
@@ -120,7 +119,7 @@ function addOAuth (options, permissions, instance) {
       options.ravAccessKey,
       options.ravSecretKey,
       '1.0A',
-      this._callbackUrl,
+      options.callbackUrl,
       'HMAC-SHA1'
     )
   });
@@ -193,40 +192,60 @@ function addOAuthMethods (instance) {
       );
     },
     get: function (endpoint, cb) {
-      instance.auth.get(
-        API_ROOT + endpoint,
-        instance.accessToken,
-        instance.accessSecret,
-        cb // args: err, data, response
-      );
+      return new Promise(function (resolve, reject) {
+        instance.auth.get(
+          API_ROOT + endpoint,
+          instance.accessToken,
+          instance.accessSecret,
+          function (err, data, _responseObject) {
+            if (err) reject(err);
+            else resolve(JSON.parse(data));
+          }
+        );
+      });
     },
     post: function (endpoint, params, cb) {
-      instance.auth.post(
-        API_ROOT + endpoint,
-        instance.accessToken,
-        instance.accessSecret,
-        params,
-        'application/json',
-        cb // args: err, data, response
-      );
+      return new Promise(function (resolve, reject) {
+        instance.auth.post(
+          API_ROOT + endpoint,
+          instance.accessToken,
+          instance.accessSecret,
+          params,
+          'application/json',
+          function (err, data, _response) {
+            if (err) reject(err);
+            else resolve(JSON.parse(data));
+          }
+        );
+      });
     },
     put: function (endpoint, params, cb) {
-      instance.auth.put(
-        API_ROOT + endpoint,
-        instance.accessToken,
-        instance.accessSecret,
-        params,
-        'application/json',
-        cb // args: err, data, response
-      );
+      return new Promise(function (resolve, reject) {
+        instance.auth.put(
+          API_ROOT + endpoint,
+          instance.accessToken,
+          instance.accessSecret,
+          params,
+          'application/json',
+          function (err, data, _response) {
+            if (err) reject(err);
+            else resolve(JSON.parse(data));
+          }
+        );
+      });
     },
     delete: function (endpoint, cb) {
-      instance.auth.delete(
-        API_ROOT + endpoint,
-        instance.accessToken,
-        instance.accessSecret,
-        cb // args: err, data, response
-      );
+      return new Promise(function (resolve, reject) {
+        instance.auth.delete(
+          API_ROOT + endpoint,
+          instance.accessToken,
+          instance.accessSecret,
+          function (err, data, _response) {
+            if (err) reject(err);
+            else resolve(JSON.parse(data));
+          }
+        );
+      });
     }
   });
 }

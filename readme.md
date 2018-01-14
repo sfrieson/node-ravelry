@@ -14,18 +14,22 @@ Setting it up is easy!  Once you have all of your information from Ravelry, put 
 
 ### Basic Authorization
 
+Basic authorization is used for accessing the Ravelry's API endpoints that don't need authorization as well as your personal account's data.  If that's all you need, you're good to go from here.
+
 ```
 var Ravelry = require('ravelry');
 var rav = Ravelry.basic({
-  ravAccessKey: xxxxxxxxxx,
+  ravAccessKey: xxxxxxxxxx, // also called Username in Ravelry Pro
   ravPersonalKey: xxxxxxxxxx
 });
 ```
-Basic authorization is used for accessing the Ravelry's API endpoints that don't need authorization as well as your personal account's data.  If that's all you need, you're good to go from here.  If you need to support accessing other users' data, then you'll need to use OAuth.
 
 See the examples folder for a more fleshed out example of basic auth.
 
-### OAuth1.0
+### OAuth1.0a
+
+To have other users sign into your app there is a little more work to do because of the OAuth framework.
+
 ```
 var Ravelry = require('ravelry');
 var rav = new Ravelry({
@@ -36,8 +40,22 @@ var rav = new Ravelry({
   'forum-write', 'message-write' // Permissions scope variables
 ]);
 ```
+#### Custom authorization
 
-To authenticate your app, get the log-in url from Ravelry using the method `signInUrl()` and direct your user to it.  After the user has successfully signed in, there will be a request to the `callbackUrl`, the OAuth verifier will need to be set in the app. (Note: I am working on making this process easier.  It may change in coming versions.)
+1. `rav.signInUrl()`:
+When your user is not logged in you first need to get the sign-in url for them. This method, as a promise returns the url, and as a callback returns the error as the first argument and the url as the second. You can decide from here how to direct your user to this url. From there, if they're already logged into Ravelry they will just have to authenticate your app. If they're not, they'll have to log in to authenticate your app.
+1. `callbackUrl`:
+Once the user has been properly authenticated a GET request will be made to the supplied `callbackUrl`.
+**Note:**
+It seems that the Ravelry API does not support OAuth out of band (oob) support which is why a callback url is required.
+1. `rav.authorize(url)`:
+Set up is completed by calling the `authorize` method with the current url and its query params. This method will request the user's info from Ravelry, and return it if successful.  From this point, you can also access the user's info at `rav.user`.
+
+See the examples folder for a more detailed OAuth1.0 example using a simple http server.
+
+#### Authorization middleware
+
+A featured is planned so that with a few options, the above steps (and more) will can be done for you.
 
 ```
 var URL = require('url');

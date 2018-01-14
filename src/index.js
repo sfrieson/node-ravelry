@@ -1,3 +1,4 @@
+var URL = require('url');
 var ravleryAPI = require('./ravelry-api');
 var initCommonCalls = require('./utilities/commonCalls.js');
 
@@ -68,23 +69,32 @@ function init (authorization, options, permissions) {
       });
     };
 
-    instance.authorize = function (req, res, next) {
-      if (req.url.match('oauth_verifier=') && API._responseUrl) {
-        console.log('Authorizing');
-        var queries = require('url').parse(req.url, true).query;
+    instance.authorize = function (url, cb) {
+      return new Promise(function (resolve, reject) {
+        var queries = URL.parse(url, true).query;
+        if (!queries.oauth_verifier) {
+          var err = new Error('URL does not contain OAuth verifier.');
+          if (cb) return cb(err);
+          else return reject(err);
+        }
 
         API.getAccessToken(queries.oauth_verifier, function (err, data) {
-          if (err) return err;
-          // that._access_token already set
-          // that._access_secret already set
-          instance.currentUser(function (err, data) {
-            if (err) return err;
+          if (err) {
+            if (cb) return cb(err);
+            else return reject(err);
+          }
+          instance.misc.currentUser(function (err, data) {
+            if (err) {
+              if (cb) return cb(err);
+              else return reject(err);
+            }
+
             instance.user = data.user;
-            res.writeHead(302, {'Location': API._responseUrl});
-            res.end();
+            if (cb) return cb(null, data.user);
+            else return resolve(data.user);
           });
         });
-      } else if (next) next(); // for use in Express
+      });
     };
   }
 
