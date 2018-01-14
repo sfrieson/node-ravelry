@@ -1,6 +1,6 @@
 var URL = require('url');
 var ravleryAPI = require('./ravelry-api');
-var initCommonCalls = require('./utilities/commonCalls.js');
+var initCommonCalls = require('./commonCalls');
 
 var misc = require('./methods/misc');
 var app = require('./methods/app');

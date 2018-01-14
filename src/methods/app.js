@@ -1,4 +1,4 @@
-var utils = require('../utilities');
+var qs = require('querystring');
 
 module.exports = function (instance, common) {
   return {
@@ -19,7 +19,7 @@ module.exports = function (instance, common) {
       },
       set: function (object, cb) {
         // config.set(object[, cb])
-        var endpoint = '/app/config/set.json' + utils.toQueryString(object);
+        var endpoint = '/app/config/set.json?' + qs.stringify(object);
         return common.post(endpoint, cb);
       }
     },
@@ -39,7 +39,7 @@ module.exports = function (instance, common) {
       },
       set: function (object, cb) {
         // data.set(keyValues[, cb])
-        var endpoint = '/app/data/set.json' + utils.toQueryString(object);
+        var endpoint = '/app/data/set.json?' + qs.stringify(object);
         return common.post(endpoint, cb);
       }
     }

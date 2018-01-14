@@ -57,54 +57,23 @@ See the examples folder for a more detailed OAuth1.0 example using a simple http
 
 A featured is planned so that with a few options, the above steps (and more) will can be done for you.
 
-```
-var URL = require('url');
-http.createServer(function (req, res) {
-
-  // When the user gets to this route redirect them to the Ravelry login
-  if ( req.url === "/") {
-
-    // Get the URL to the user's Ravelry sign-in page for your app and redirect them there
-    rav.signInUrl(function (err, url) {
-      res.writeHead(302, {'Location': url} );
-      res.end();
-    });
-
-    // After the user is successfully logged in they are sent here with their the OAuth verifier
-    if (req.url.match('/successful-log-in')) {
-
-      //Get access to the request URL queries
-      var url = URL.parse(req.url, true);
-
-      //Set the OAuth verifier to rav.oauthVerifier
-      rav.oauthVerifier = url.query.oauth_verifier;
-
-      //Finish authentication of app. You will receive the user's info. You can access the authenticated API routes now.
-      rav.accessToken(function (err, user) {
-        res.writeHead(200, 'application/json');
-        res.end(user);
-      });
-    }
-  }
-}
-```
 ### OAuth2.0
 
 Ravelry has started offering OAuth2.0 support since the creation of this package.  It is not currently supported by this package, but it is a plan to do so.
 
 ***
 
-## Using the methods
+## The methods
 
 Every endpoint in the [Ravelry API Documentation](http://www.ravelry.com/api) is available.
 
 ### Endpoints
 
-The methods (with a few exceptions) are named the same way as the endpoint title is in the documentation are:
+The methods are named the same way as the endpoint title is in the documentation except camel-cased:
 
-[/favorites/list](http://www.ravelry.com/api#favorites_list) => `rav.favorites.list()`
+[/favorites/list](http://www.ravelry.com/api#favorites_list) -> `rav.favorites.list()`
 
-[/messages/mark_read.json](http://www.ravelry.com/api#messages_mark_read) => `rav.messages.markRead()`
+[/messages/mark_read](http://www.ravelry.com/api#messages_mark_read) -> `rav.messages.markRead()`
 
 
 ### Arguments
