@@ -3,9 +3,14 @@
   "version": "0.3.2",
   "description": "Development for the Ravelry module.",
   "main": "index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "jest",
-    "doc": "node doc"
+    "build": "webpack",
+    "build:prod": "webpack -p",
+    "watch": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -25,6 +30,12 @@
   },
   "devDependencies": {
     "jest": "^22.0.6",
-    "markdown-it": "^6.0.1"
+    "webpack": "^3.10.0"
+  },
+  "semistandard": {
+    "globals": [
+      "expect",
+      "test"
+    ]
   }
 }

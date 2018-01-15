@@ -1,4 +1,3 @@
-/* global test, expect */
 var mockInstance = require('../test/mocks/instance');
 var mockAPI = require('../test/mocks/api');
 var initCommonCalls = require('./commonCalls');
