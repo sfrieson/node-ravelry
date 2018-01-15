@@ -7,9 +7,10 @@
     "dist"
   ],
   "scripts": {
-    "test": "jest",
     "build": "webpack",
     "build:prod": "webpack -p",
+    "docs": "node lib/make-documentation",
+    "test": "jest",
     "watch": "webpack --watch"
   },
   "repository": {
