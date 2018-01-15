@@ -1,10 +1,11 @@
 # 🧣 Ravelry API
 
-**CURRENTLY IN DEVELOPMENT USE AT YOUR OWN RISK**
 
 A way to make calls to all of the endpoints offered by the Ravelry API.
 
-Currently testing all of the endpoints. Documentation to follow soon.
+Every endpoint is being testing to match the [Ravelry API documentation](https://www.ravelry.com/api).  When this process is complete the library will be released as V1. As these tests are written, the documentation will come along with it.
+Currently 1/41 method groups are complete. This testing does not include testing the action endpoint (coming later), but just that it matches documentation.
+
 Please reach out if you'd like to help with either. 😄
 
 ***
@@ -40,6 +41,7 @@ var rav = new Ravelry({
   'forum-write', 'message-write' // Permissions scope variables
 ]);
 ```
+
 #### Custom authorization
 
 1. `rav.signInUrl()`:
@@ -75,7 +77,7 @@ Ravelry has started offering OAuth2.0 support since the creation of this package
 
 ## The methods
 
-Every endpoint in the [Ravelry API Documentation](http://www.ravelry.com/api) is available.
+Every endpoint in the [Ravelry API Documentation](http://www.ravelry.com/api) is available in this API client. Documentation for each can be found in their respective folders in `src/methods`.
 
 ### Endpoints
 

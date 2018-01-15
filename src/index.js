@@ -111,7 +111,7 @@ function init (authorization, options, permissions) {
         var url = URL.parse(req.url, true);
         if (opt.ignorePaths && opt.ignorePaths.indexOf(url.pathname) > -1) return next();
         if (url.pathname === callbackPath) {
-          console.log('callback')
+          instance.authorize(url.path)
           .then(function (user) {
             var redirect = resumeUrl || opt.redirect;
             resumeUrl = null;

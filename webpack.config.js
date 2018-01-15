@@ -1,19 +1,25 @@
 var path = require('path');
-var FlowtypePlugin = require('flowtype-loader/plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
+  context: path.resolve(__dirname, 'src'),
   entry: './index.js',
+  target: 'node',
   output: {
     filename: 'index.js',
-    path: path.resolve(__dirname, 'dist')
-  },
-  context: path.resolve(__dirname, 'src'),
-  module: {
-    rules: [
-      {test: /\.js$/, loader: 'flowtype-loader', enforce: 'pre', exclude: /node_modules/}
-    ]
+    path: path.resolve(__dirname, 'dist'),
+    libraryTarget: 'umd'
   },
   plugins: [
-    new FlowtypePlugin()
+    new UglifyJSPlugin({
+      sourceMap: false,
+      uglifyOptions: {
+        compress: {
+          ecma: 6,
+          warnings: false
+        },
+        extractComments: true
+      }
+    })
   ]
 };

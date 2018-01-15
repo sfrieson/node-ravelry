@@ -2,14 +2,15 @@
   "name": "ravelry",
   "version": "0.3.2",
   "description": "Development for the Ravelry module.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "webpack",
-    "build:prod": "webpack -p",
     "docs": "node lib/make-documentation",
+    "prepublish": "npm run test && npm run build",
+    "preversion": "npm run test",
     "test": "jest",
     "watch": "webpack --watch"
   },
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "jest": "^22.0.6",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0"
   },
   "semistandard": {
