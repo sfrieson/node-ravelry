@@ -96,6 +96,36 @@ function init (authorization, options, permissions) {
         });
       });
     };
+
+    instance.authorizationMiddleware = function (middlewareOptions) {
+      var opt = Object.assign({
+        ignorePaths: null,
+        redirect: '/',
+        resume: false
+      }, middlewareOptions);
+      var resumeUrl = null;
+      var callbackPath = URL.parse(options.callbackUrl).path;
+
+      return function (req, res, next) {
+        if (instance.user) return next();
+        var url = URL.parse(req.url, true);
+        if (opt.ignorePaths && opt.ignorePaths.indexOf(url.pathname) > -1) return next();
+        if (url.pathname === callbackPath) {
+          console.log('callback')
+          .then(function (user) {
+            var redirect = resumeUrl || opt.redirect;
+            resumeUrl = null;
+            res.redirect(redirect);
+          });
+        } else {
+          instance.getSignInUrl()
+          .then(function (signInUrl) {
+            if (opt.resume) resumeUrl = url.path;
+            res.redirect(signInUrl);
+          });
+        }
+      };
+    };
   }
 
   // Can't use prototype because they need access to instance context

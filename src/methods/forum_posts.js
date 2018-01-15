@@ -1,4 +1,4 @@
-var utils = require('../utilities');
+var qs = require('querystring');
 
 module.exports = function (instance, common) {
   return {
@@ -7,9 +7,9 @@ module.exports = function (instance, common) {
       return common.get(`/forum_posts/${id}.json`, cb);
     },
     unread: function (params, cb) {
-      // unread[(params, cb])
+      // unread([params, cb])
       return common.get(
-        '/forum_posts/unread.json' + utils.toQueryString(params),
+        '/forum_posts/unread.json' + '?' + qs.stringify(params),
         cb
       );
     },

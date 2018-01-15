@@ -53,9 +53,19 @@ Set up is completed by calling the `authorize` method with the current url and i
 
 See the examples folder for a more detailed OAuth1.0 example using a simple http server.
 
-#### Authorization middleware
+#### OAuth Express middleware
 
-A featured is planned so that with a few options, the above steps (and more) will can be done for you.
+If you're running an Express app and using Oauth1.0a, there is a middleware that can do the above and a bit more for you automatically. It is a method on the same object created from the `Ravelry` factory function and it is used like this:
+
+`app.use(rav.authorizationMiddleware({resume: true}));`
+
+The method requires an options object with these properties:
+
+`redirect` (String, optional, default: `"/"`) - This is the path to redirect to once the user has been authenticated in. It is required to supply this option or set `resume` to true.
+`resume` (Boolean, optional, default: `false`) - If true, the middleware will save the path that was requested before the middleware kicked in and let the user resume there after authenticating.  If true, this will override the `redirect` property.
+`ignorePaths` ([String], optional, default: `[]`) - You can supply an array of paths for the middleware to ignore like `'/sign-in'`.
+
+See the examples folder for a more detailed example using Express and the OAuth1.0a middleware.
 
 ### OAuth2.0
 

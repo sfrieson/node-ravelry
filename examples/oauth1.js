@@ -10,7 +10,9 @@ var rav = Ravelry.oauth1({
   ravAccessKey: process.env.RAV_ACCESS_KEY,
   ravSecretKey: process.env.RAV_SECRET_KEY,
   callbackUrl: `http://localhost:${port}${callbackPath}`
-});
+}, [
+  'forum-write', 'message-write', 'patternstore-read', 'deliveries-read'
+]);
 
 function requestHandler (request, response) {
   var url = URL.parse(request.url);
