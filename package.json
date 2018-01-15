@@ -1,6 +1,6 @@
 {
   "name": "ravelry",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Development for the Ravelry module.",
   "main": "index.js",
   "scripts": {
