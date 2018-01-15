@@ -14,11 +14,11 @@ module.exports = function (instance, common) {
     },
     status: function (params, cb) {
       // status(params[, cb])
-      return common.getParams('photos/status.json', params, cb);
+      return common.get('photos/status.json', params, cb);
     },
     update: function (id, params, cb) {
       // update(id[, params, cb])
-      return common.postParams(`/photos/${id}.json`, params, cb);
+      return common.post(`/photos/${id}.json`, params, cb);
     }
   };
 };

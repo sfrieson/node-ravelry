@@ -2,7 +2,7 @@ module.exports = function (instance, common) {
   return {
     create: function (Pack, cb) {
       // create(Pack[, cb])
-      return common.postParams('/packs/create.json', Pack, cb);
+      return common.post('/packs/create.json', Pack, cb);
     },
     delete: function (id, cb) {
       // delete(id[, cb])
@@ -14,7 +14,7 @@ module.exports = function (instance, common) {
     },
     update: function (id, Pack, cb) {
       // update(id, Pack[, cb])
-      return common.putParams(`/packs/${id}.json`, Pack, cb);
+      return common.put(`/packs/${id}.json`, Pack, cb);
     }
   };
 };

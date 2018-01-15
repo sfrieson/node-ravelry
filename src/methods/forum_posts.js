@@ -15,11 +15,11 @@ module.exports = function (instance, common) {
     },
     update: function (id, params, cb) {
       // update(id, params[, cb])
-      return common.postParams(`/forum_posts/${id}.json`, params, cb);
+      return common.post(`/forum_posts/${id}.json`, params, cb);
     },
     vote: function (id, params, cb) {
       // vote(id, params[, cb])
-      return common.postParams(`/forum_posts/${id}/vote.json`, params, cb);
+      return common.post(`/forum_posts/${id}/vote.json`, params, cb);
     }
   };
 };

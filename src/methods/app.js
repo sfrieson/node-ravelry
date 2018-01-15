@@ -8,7 +8,7 @@ module.exports = function (instance, common) {
         var keys = '';
         if (keyArr) keys = '?keys=' + keyArr.join('+');
         var endpoint = '/app/config/delete.json' + keys;
-        return common.post(endpoint, cb);
+        return common.post(endpoint, null, cb);
       },
       get: function (keyArr, cb) {
         // config.get([keyArr, cb])
@@ -20,7 +20,7 @@ module.exports = function (instance, common) {
       set: function (object, cb) {
         // config.set(object[, cb])
         var endpoint = '/app/config/set.json?' + qs.stringify(object);
-        return common.post(endpoint, cb);
+        return common.post(endpoint, null, cb);
       }
     },
     data: {
@@ -29,7 +29,7 @@ module.exports = function (instance, common) {
         var keys = '';
         if (keyArr) keys = '?keys=' + keyArr.join('+');
         var endpoint = '/app/data/delete.json' + keys;
-        return common.post(endpoint, cb);
+        return common.post(endpoint, null, cb);
       },
       get: function (keysArrOrStr, cb) {
         // data.get([keysArrOrStr:Array|String, cb])
@@ -40,7 +40,7 @@ module.exports = function (instance, common) {
       set: function (object, cb) {
         // data.set(keyValues[, cb])
         var endpoint = '/app/data/set.json?' + qs.stringify(object);
-        return common.post(endpoint, cb);
+        return common.post(endpoint, null, cb);
       }
     }
   };

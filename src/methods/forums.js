@@ -6,7 +6,7 @@ module.exports = function (instance, common) {
     },
     topics: function (id, params, cb) {
       // topics(id, params[, cb])
-      return common.getParams(`/forums/${id}/topics.json`, params, cb);
+      return common.get(`/forums/${id}/topics.json`, params, cb);
     }
   };
 };

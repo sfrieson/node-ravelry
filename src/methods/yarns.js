@@ -2,7 +2,7 @@ module.exports = function (instance, common) {
   return {
     search: function (params, cb) {
       // search([params, cb])
-      return common.getParams('/yarns/search.json', params, cb);
+      return common.get('/yarns/search.json', params, cb);
     },
     show: function (id, cb) {
       // show(id[, cb])
@@ -10,7 +10,7 @@ module.exports = function (instance, common) {
     },
     yarns: function (params, cb) {
       // yarns([params, cb])
-      return common.getParams('/yarns.json', params, cb);
+      return common.get('/yarns.json', params, cb);
     }
   };
 };

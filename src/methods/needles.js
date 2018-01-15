@@ -2,11 +2,11 @@ module.exports = function (instance, common) {
   return {
     list: function (username, cb) {
       // list([username, cb])
-      return common.getUser('/people/', '/needles/list.json', username, cb);
+      return common.get(`/people/${username || instance.user.username}/needles/list.json`, cb);
     },
     sizes: function (params, cb) {
       // sizes([params, cb])
-      return common.getParams('/needles/sizes.json', params, cb);
+      return common.get('/needles/sizes.json', params, cb);
     },
     types: function (cb) {
       // types([cb])

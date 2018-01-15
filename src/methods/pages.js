@@ -6,7 +6,7 @@ module.exports = function (instance, common) {
     },
     update: function (id, params, cb) {
       // update(id, params[, cb])
-      return common.putParams(`/pages/${id}.json`, params, cb);
+      return common.put(`/pages/${id}.json`, params, cb);
     }
   };
 };

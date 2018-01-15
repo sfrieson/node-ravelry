@@ -2,7 +2,7 @@ module.exports = function (instance, common) {
   return {
     create: function (Volume, cb) {
       // create(Volume[, cb])
-      return common.postParams('/volumes/create.json', Volume, cb);
+      return common.post('/volumes/create.json', Volume, cb);
     },
     delete: function (id, cb) {
       // delete(id[, cb])

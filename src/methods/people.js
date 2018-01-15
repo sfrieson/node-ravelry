@@ -6,7 +6,7 @@ module.exports = function (instance, common) {
     },
     update: function (id, params, cb) {
       // show(id[, cb])
-      return common.postParams(`/people/${id}.json`, params, cb);
+      return common.post(`/people/${id}.json`, params, cb);
     }
   };
 };
