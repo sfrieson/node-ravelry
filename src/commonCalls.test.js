@@ -1,42 +1,9 @@
 /* global test, expect */
+var mockInstance = require('../test/mocks/instance');
+var mockAPI = require('../test/mocks/api');
 var initCommonCalls = require('./commonCalls');
-var mockAuthInstance = {
-  user: {
-    username: 'sfrieson',
-    id: 123456
-  }
-};
 
-var mockAPI = {
-  get: function (path) {
-    return Promise.resolve({
-      method: 'GET',
-      path: path
-    });
-  },
-  post: function (path, body) {
-    return Promise.resolve({
-      method: 'POST',
-      body: body,
-      path: path
-    });
-  },
-  put: function (path, body) {
-    return Promise.resolve({
-      method: 'PUT',
-      body: body,
-      path: path
-    });
-  },
-  delete: function (path) {
-    return Promise.resolve({
-      method: 'DELETE',
-      path: path
-    });
-  }
-};
-
-const common = initCommonCalls(mockAuthInstance, mockAPI);
+const common = initCommonCalls(mockInstance, mockAPI);
 test('all methods return Promises', function () {
   expect(common.get('/endpoint') instanceof Promise).toBe(true);
   expect(common.post('/endpoint') instanceof Promise).toBe(true);

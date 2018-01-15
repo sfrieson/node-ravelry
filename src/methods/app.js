@@ -3,18 +3,16 @@ var qs = require('querystring');
 module.exports = function (instance, common) {
   return {
     config: {
-      delete: function (keyArr, cb) {
-        // config.delete(keyArr[, cb])
-        var keys = '';
-        if (keyArr) keys = '?keys=' + keyArr.join('+');
-        var endpoint = '/app/config/delete.json' + keys;
+      delete: function (keys, cb) {
+        var endpoint = '/app/config/delete.json' + '?keys=' + keys.join('+');
         return common.post(endpoint, null, cb);
       },
-      get: function (keyArr, cb) {
-        // config.get([keyArr, cb])
-        var keys = '';
-        if (keyArr) keys = '?keys=' + keyArr.join('+');
-        var endpoint = '/app/config/get.json' + keys;
+      get: function (keys, cb) {
+        // config.get([keys, cb])
+        var keyStr = '';
+        if (keys && typeof keys === 'object') keyStr = '?keys=' + keys.join('+');
+        else cb = keys;
+        var endpoint = '/app/config/get.json' + keyStr;
         return common.get(endpoint, cb);
       },
       set: function (object, cb) {
