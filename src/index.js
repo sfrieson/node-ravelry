@@ -26,6 +26,7 @@ var needles = require('./methods/needles');
 var packs = require('./methods/packs');
 var pages = require('./methods/pages');
 var patternSources = require('./methods/pattern_sources');
+var patternCategories = require('./methods/pattern_categories');
 var patterns = require('./methods/patterns');
 var people = require('./methods/people');
 var photos = require('./methods/photos');
@@ -158,6 +159,7 @@ function init (authorization, options, permissions) {
   instance.packs = packs(instance, commonCalls);
   instance.pages = pages(instance, commonCalls);
   instance.patternSources = patternSources(instance, commonCalls);
+  instance.patternCategories = patternCategories(instance, commonCalls);
   instance.patterns = patterns(instance, commonCalls);
   instance.people = people(instance, commonCalls);
   instance.photos = photos(instance, commonCalls);

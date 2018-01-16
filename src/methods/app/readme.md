@@ -4,7 +4,7 @@
 
 `app.config.delete(keys, cb)`
 
-**Params:**
+**Parameters:**
 - keys (required): `Array<string>`
 - cb: `() => mixed`
 
@@ -12,7 +12,7 @@
 
 `app.config.get(keys, cb)`
 
-**Params:**
+**Parameters:**
 - keys: `Array<string>`
 - cb: `() => mixed`
 
@@ -20,7 +20,7 @@
 
 `app.config.set(paramsObj, cb)`
 
-**Params:**
+**Parameters:**
 - paramsObj (required): `{ [string]: string }`
 - cb: `() => mixed`
 
@@ -28,7 +28,7 @@
 
 `app.data.delete(keys, cb)`
 
-**Params:**
+**Parameters:**
 - keys (required): `Array<string>`
 - cb: `() => mixed`
 
@@ -36,7 +36,7 @@
 
 `app.data.get(keys, cb)`
 
-**Params:**
+**Parameters:**
 - keys: `Array<string>`
 - cb: `() => mixed`
 
@@ -44,7 +44,7 @@
 
 `app.data.set(paramsObj, cb)`
 
-**Params:**
+**Parameters:**
 - paramsObj (required): `{ [string]: string }`
 - cb: `() => mixed`
 
