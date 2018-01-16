@@ -1,13 +1,13 @@
 var commonCalls = require('../../../test/mocks/commonCalls');
 var instance = require('../../../test/mocks/instance');
-var fiberAttributes = require('./')(instance, commonCalls);
+var fiberAttributeGroups = require('./')(instance, commonCalls);
 
-test('fiberAttributes.list', function (done) {
-  fiberAttributes.list()
+test('fiberAttributeGroups.list', function (done) {
+  fiberAttributeGroups.list()
   .then(function (req) {
     expect(req).toEqual({
       method: 'GET',
-      path: '/fiber_attributes.json'
+      path: '/fiber_attribute_groups.json'
     });
   })
   .then(done);
