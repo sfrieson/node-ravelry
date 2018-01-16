@@ -2,7 +2,7 @@
 
 ## [config/delete](https://www.ravelry.com/api#app_config/delete)
 
-`app.config.delete(keys, cb)`
+`rav.app.config.delete(keys, cb)`
 
 **Parameters:**
 - keys (required): `Array<string>`
@@ -10,7 +10,7 @@
 
 ## [config/get](https://www.ravelry.com/api#app_config/get)
 
-`app.config.get(keys, cb)`
+`rav.app.config.get(keys, cb)`
 
 **Parameters:**
 - keys: `Array<string>`
@@ -18,7 +18,7 @@
 
 ## [config/set](https://www.ravelry.com/api#app_config/set)
 
-`app.config.set(paramsObj, cb)`
+`rav.app.config.set(paramsObj, cb)`
 
 **Parameters:**
 - paramsObj (required): `{ [string]: string }`
@@ -26,7 +26,7 @@
 
 ## [data/delete](https://www.ravelry.com/api#app_data/delete)
 
-`app.data.delete(keys, cb)`
+`rav.app.data.delete(keys, cb)`
 
 **Parameters:**
 - keys (required): `Array<string>`
@@ -34,7 +34,7 @@
 
 ## [data/get](https://www.ravelry.com/api#app_data/get)
 
-`app.data.get(keys, cb)`
+`rav.app.data.get(keys, cb)`
 
 **Parameters:**
 - keys: `Array<string>`
@@ -42,7 +42,7 @@
 
 ## [data/set](https://www.ravelry.com/api#app_data/set)
 
-`app.data.set(paramsObj, cb)`
+`rav.app.data.set(paramsObj, cb)`
 
 **Parameters:**
 - paramsObj (required): `{ [string]: string }`

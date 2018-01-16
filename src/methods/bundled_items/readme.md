@@ -2,7 +2,7 @@
 
 ## [delete](https://www.ravelry.com/api#bundled_items_delete)
 
-`bundledItems.delete(id, cb)`
+`rav.bundledItems.delete(id, cb)`
 
 **Parameters:**
 - id (required): `number`
@@ -10,7 +10,7 @@
 
 ## [show](https://www.ravelry.com/api#bundled_items_show)
 
-`bundledItems.show(id, cb)`
+`rav.bundledItems.show(id, cb)`
 
 **Parameters:**
 - id (required): `number`

@@ -4,7 +4,7 @@
 A way to make calls to all of the endpoints offered by the Ravelry API.
 
 Every endpoint is being testing to match the [Ravelry API documentation](https://www.ravelry.com/api).  When this process is complete the library will be released as V1. As these tests are written, the documentation will come along with it.
-Currently 3/41 method groups are complete. This testing does not include testing the action endpoint (coming later), but just that it matches documentation.
+Currently 4/41 method groups are complete. This testing does not include testing the action endpoint (coming later), but just that it matches documentation.
 
 Please reach out if you'd like to help with either. 😄
 
