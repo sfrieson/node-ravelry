@@ -12,6 +12,9 @@ var deliveries = require('./methods/deliveries');
 var extras = require('./methods/extras');
 var favorites = require('./methods/favorites');
 var fiber = require('./methods/fiber');
+var fiberAttributeGroups = require('./methods/fiber_attribute_groups');
+var fiberAttributes = require('./methods/fiber_attributes');
+var fiberCategories = require('./methods/fiber_categories');
 var forumPosts = require('./methods/forum_posts');
 var forums = require('./methods/forums');
 var friends = require('./methods/friends');
@@ -37,6 +40,7 @@ var stores = require('./methods/stores');
 var topics = require('./methods/topics');
 var upload = require('./methods/upload');
 var volumes = require('./methods/volumes');
+var yarnCompanies = require('./methods/yarnCompanies');
 var yarns = require('./methods/yarns');
 
 var instance = {
@@ -140,6 +144,9 @@ function init (authorization, options, permissions) {
   instance.extras = extras(instance, commonCalls);
   instance.favorites = favorites(instance, commonCalls);
   instance.fiber = fiber(instance, commonCalls);
+  instance.fiberAttributeGroups = fiberAttributeGroups(instance, commonCalls);
+  instance.fiberAttributes = fiberAttributes(instance, commonCalls);
+  instance.fiberCategories = fiberCategories(instance, commonCalls);
   instance.forumPosts = forumPosts(instance, commonCalls);
   instance.forums = forums(instance, commonCalls);
   instance.friends = friends(instance, commonCalls);
@@ -165,6 +172,7 @@ function init (authorization, options, permissions) {
   instance.topics = topics(instance, commonCalls);
   instance.upload = upload(instance, commonCalls);
   instance.volumes = volumes(instance, commonCalls);
+  instance.yarnCompanies = yarnCompanies(instance, commonCalls);
   instance.yarns = yarns(instance, commonCalls);
 
   instance._initialized = true;
