@@ -1,4 +1,3 @@
-
 var commonCalls = require('../../../test/mocks/commonCalls');
 var instance = require('../../../test/mocks/instance');
 var bundles = require('./')(instance, commonCalls);
