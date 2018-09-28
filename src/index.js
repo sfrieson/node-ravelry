@@ -117,17 +117,17 @@ function init (authorization, options, permissions) {
         if (opt.ignorePaths && opt.ignorePaths.indexOf(url.pathname) > -1) return next();
         if (url.pathname === callbackPath) {
           instance.authorize(url.path)
-          .then(function (user) {
-            var redirect = resumeUrl || opt.redirect;
-            resumeUrl = null;
-            res.redirect(redirect);
-          });
+            .then(function (user) {
+              var redirect = resumeUrl || opt.redirect;
+              resumeUrl = null;
+              res.redirect(redirect);
+            });
         } else {
           instance.getSignInUrl()
-          .then(function (signInUrl) {
-            if (opt.resume) resumeUrl = url.path;
-            res.redirect(signInUrl);
-          });
+            .then(function (signInUrl) {
+              if (opt.resume) resumeUrl = url.path;
+              res.redirect(signInUrl);
+            });
         }
       };
     };

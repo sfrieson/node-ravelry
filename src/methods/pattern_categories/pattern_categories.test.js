@@ -4,11 +4,11 @@ var patternCategories = require('./')(instance, commonCalls);
 
 test('patternCategories.list', function (done) {
   patternCategories.list()
-  .then(function (req) {
-    expect(req).toEqual({
-      method: 'GET',
-      path: '/pattern_categories/list.json'
-    });
-  })
-  .then(done);
+    .then(function (req) {
+      expect(req).toEqual({
+        method: 'GET',
+        path: '/pattern_categories/list.json'
+      });
+    })
+    .then(done);
 });

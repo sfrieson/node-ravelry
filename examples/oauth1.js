@@ -28,10 +28,10 @@ function requestHandler (request, response) {
     case '/login':
       if (!rav.user) {
         rav.getSignInUrl()
-        .then(function (url) {
-          response.writeHead(200, {'Content-Type': 'text/html'});
-          response.end(`<a href="${url}">Click here to login with Ravelry</a>.`);
-        });
+          .then(function (url) {
+            response.writeHead(200, {'Content-Type': 'text/html'});
+            response.end(`<a href="${url}">Click here to login with Ravelry</a>.`);
+          });
       } else {
         response.writeHead(302, {'Location': '/'});
         response.end();
@@ -39,10 +39,10 @@ function requestHandler (request, response) {
       break;
     case callbackPath:
       rav.authorize(url.path) // url.path includes querystring
-      .then(function (user) {
-        response.writeHead('302', {'Location': '/'});
-        response.end();
-      });
+        .then(function (user) {
+          response.writeHead('302', {'Location': '/'});
+          response.end();
+        });
       break;
     default:
       response.writeHead('404', {'Location': '/login'});

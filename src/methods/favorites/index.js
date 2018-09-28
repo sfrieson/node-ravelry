@@ -8,7 +8,7 @@ module.exports = function (instance, common) {
     create: function (Bookmark, cb) {
       // create(Bookmark[, cb])
       return common.post(`/people/${instance.user.username}/favorites/create.json`,
-          Bookmark, cb);
+        Bookmark, cb);
     },
     delete: function (id, cb) {
       // delete(id[, cb])

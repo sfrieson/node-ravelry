@@ -11,29 +11,29 @@ module.exports = function (instance, API) {
       if (params) endpoint += '?' + qs.stringify(params);
       if (cb) {
         API.get(endpoint)
-        .then((res) => cb(null, res))
-        .catch(err => cb(err));
+          .then((res) => cb(null, res))
+          .catch(err => cb(err));
       } else return API.get(endpoint);
     },
     post: function (endpoint, params, cb) {
       if (cb) {
         API.post(endpoint, params)
-        .then((res) => cb(null, res))
-        .catch(err => cb(err));
+          .then((res) => cb(null, res))
+          .catch(err => cb(err));
       } else return API.post(endpoint, params);
     },
     put: function (endpoint, params, cb) {
       if (cb) {
         API.put(endpoint, params)
-        .then(res => cb(null, res))
-        .catch(err => cb(err));
+          .then(res => cb(null, res))
+          .catch(err => cb(err));
       } else return API.put(endpoint, params);
     },
     delete: function (endpoint, cb) {
       if (cb) {
         API.delete(endpoint)
-        .then(res => cb(null, res))
-        .catch(err => cb(err));
+          .then(res => cb(null, res))
+          .catch(err => cb(err));
       } else return API.delete(endpoint);
     }
   };

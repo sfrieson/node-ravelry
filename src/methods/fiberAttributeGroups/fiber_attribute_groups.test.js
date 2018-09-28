@@ -4,11 +4,11 @@ var fiberAttributeGroups = require('./')(instance, commonCalls);
 
 test('fiberAttributeGroups.list', function (done) {
   fiberAttributeGroups.list()
-  .then(function (req) {
-    expect(req).toEqual({
-      method: 'GET',
-      path: '/fiber_attribute_groups.json'
-    });
-  })
-  .then(done);
+    .then(function (req) {
+      expect(req).toEqual({
+        method: 'GET',
+        path: '/fiber_attribute_groups.json'
+      });
+    })
+    .then(done);
 });

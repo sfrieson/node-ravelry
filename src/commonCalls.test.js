@@ -24,78 +24,78 @@ test('all methods accept callback', function (done) {
 
 test('#get accepts a url', function (done) {
   common.get('/url-path')
-  .then(function (res) {
-    expect(res)
-    .toEqual({
-      method: 'GET',
-      path: '/url-path'
-    });
-  })
-  .then(done);
+    .then(function (res) {
+      expect(res)
+        .toEqual({
+          method: 'GET',
+          path: '/url-path'
+        });
+    })
+    .then(done);
 });
 
 test('#get accepts a url', function (done) {
   common.get('/url-path')
-  .then(function (res) {
-    expect(res)
-    .toEqual({
-      method: 'GET',
-      path: '/url-path'
-    });
-  })
-  .then(done);
+    .then(function (res) {
+      expect(res)
+        .toEqual({
+          method: 'GET',
+          path: '/url-path'
+        });
+    })
+    .then(done);
 });
 
 test('#get accepts a querystring object', function (done) {
   common.get('/url-path', {foo: 'bar'})
-  .then(function (res) {
-    expect(res)
-    .toEqual({
-      method: 'GET',
-      path: '/url-path?foo=bar'
-    });
-  })
-  .then(done);
+    .then(function (res) {
+      expect(res)
+        .toEqual({
+          method: 'GET',
+          path: '/url-path?foo=bar'
+        });
+    })
+    .then(done);
 });
 
 test('#post accepts a url and data', function (done) {
   var data = {foo: 'bar'};
 
   common.post('/url-path', data)
-  .then(function (res) {
-    expect(res)
-    .toEqual({
-      method: 'POST',
-      body: data,
-      path: '/url-path'
-    });
-  })
-  .then(done);
+    .then(function (res) {
+      expect(res)
+        .toEqual({
+          method: 'POST',
+          body: data,
+          path: '/url-path'
+        });
+    })
+    .then(done);
 });
 
 test('#put accepts a url and data', function (done) {
   var data = {foo: 'bar'};
 
   common.put('/url-path', data)
-  .then(function (res) {
-    expect(res)
-    .toEqual({
-      method: 'PUT',
-      body: data,
-      path: '/url-path'
-    });
-  })
-  .then(done);
+    .then(function (res) {
+      expect(res)
+        .toEqual({
+          method: 'PUT',
+          body: data,
+          path: '/url-path'
+        });
+    })
+    .then(done);
 });
 
 test('#delete accepts a url', function (done) {
   common.put('/url-path')
-  .then(function (res) {
-    expect(res)
-    .toEqual({
-      method: 'PUT',
-      path: '/url-path'
-    });
-  })
-  .then(done);
+    .then(function (res) {
+      expect(res)
+        .toEqual({
+          method: 'PUT',
+          path: '/url-path'
+        });
+    })
+    .then(done);
 });
