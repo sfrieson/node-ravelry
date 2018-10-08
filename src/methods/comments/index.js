@@ -9,7 +9,6 @@ module.exports = function (instance, common) {
     },
     // doc.method: create rav.comments.delete(id: number, cb?: () => mixed)
     delete: function (id, cb) {
-      // delete(id[, cb])
       return common.delete(`/comments/${id}.json`, cb);
     },
     // doc.method: list rav.comments.list(cb?: () => mixed)
